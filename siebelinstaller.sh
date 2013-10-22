@@ -3,7 +3,7 @@
 SCRIPT_ROOT=`dirname $0`
 
 source $SCRIPT_ROOT/config.defaults
-source $SCRIPT_ROOT/` basename $0 .sh`.lib
+source $SCRIPT_ROOT/` basename $0 .sh`_lib.sh
 
 if [ -e $SCRIPT_ROOT/config.local ]
 then
