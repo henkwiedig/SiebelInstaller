@@ -70,4 +70,5 @@ download_from_mos ()
 
 download_from_mos "oracle_$ORACLE_VERSION"
 download_from_mos "siebel_$SIEBEL_VERSION"
+download_from_mos "ohs_$OHS_VERSION"
 echo "Done!"
