@@ -15,12 +15,18 @@ fi
 cd $SCRIPT_ROOT
 
 mkdir -p $SCRIPT_ROOT/log
+mkdir -p $SCRIPT_ROOT/.status
 
 if [ x"$MOS_PASSWORD " = x"CHANGE_ME" ] && [ x"$MOS_USERNAME" = x"foo@bar.com" ]
 then
  echo "Please set MOS_PASSWORD and MOS_USERNAME in config.local file"
  exit
 fi
+
+prepare_host ()
+{
+  yum -y install zip unzip
+}
 
 download_from_mos ()
 {
@@ -66,9 +72,48 @@ download_from_mos ()
   done
   rm -f $COOKIE_FILE
   export LANG=$OLD_LANG
+  return 0
 }
 
-download_from_mos "oracle_$ORACLE_VERSION"
-download_from_mos "siebel_$SIEBEL_VERSION"
-download_from_mos "ohs_$OHS_VERSION"
+unpack_product  ()
+{
+  echo "Unpacking : $1"
+  source $SCRIPT_ROOT/products/$1.info
+  mkdir -p $SCRIPT_ROOT/unpack/$1
+
+  for file in $FILES_LIST
+  do
+    file_url=$(eval "echo \$${file}_URL")
+    file_name=$(eval "echo \$${file}_NAME")
+    echo "Unpacking file: $file_name"
+    unzip -o -q $SCRIPT_ROOT/downloads/$1/$file_name -d $SCRIPT_ROOT/unpack/$1/
+  done
+}
+
+execute_once ()
+{
+  if [ ! -e $SCRIPT_ROOT/.status/$1_$2 ]
+  then
+    echo "Executing: $1 \"$2\""
+    $1 "$2" && touch $SCRIPT_ROOT/.status/$1_$2
+  else
+    echo "Skipping execution of : $1 \"$2\" please remove $SCRIPT_ROOT/.status/$1_$2 if this is incorrect"
+  fi
+}
+
+#Run users pre install script
+[ ! -z $PRE_INSTALL_SCRIPT ] && [ ! -e $SCRIPT_ROOT/.status/pre_install_script ] && sh $PRE_INSTALL_SCRIPT && touch $SCRIPT_ROOT/.status/pre_install_script
+
+#prepare host
+execute_once prepare_host prepare_host
+
+#download
+execute_once download_from_mos "oracle_$ORACLE_VERSION"
+execute_once download_from_mos "siebel_$SIEBEL_VERSION"
+execute_once download_from_mos "ohs_$OHS_VERSION"
+
+#unpack products
+execute_once unpack_product "oracle_$ORACLE_VERSION"
+execute_once unpack_product "siebel_$SIEBEL_VERSION"
+
 echo "Done!"
