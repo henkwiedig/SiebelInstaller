@@ -1,0 +1,7 @@
+
+Used CentOS Install Media
+ftp://ftp.halifax.rwth-aachen.de/centos/6.4/isos/x86_64/CentOS-6.4-x86_64-netinstall.iso
+
+Used Centos Mirro
+http://mirrors.sonic.net/centos/6/os/x86_64/
+
