@@ -102,7 +102,7 @@ execute_once ()
 }
 
 #Run users pre install script
-[ ! -z $PRE_INSTALL_SCRIPT ] && [ ! -e $SCRIPT_ROOT/.status/pre_install_script ] && sh $PRE_INSTALL_SCRIPT && touch $SCRIPT_ROOT/.status/pre_install_script
+[ ! $SCRIPT_ROOT/.status/pre_install_script ] && sh $PRE_INSTALL_SCRIPT && touch $SCRIPT_ROOT/.status/pre_install_script
 
 #prepare host
 execute_once prepare_host prepare_host
