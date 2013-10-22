@@ -22,11 +22,11 @@ These scripts will download, install, configure a complete Siebel Installation.
 
 * Install RHEL or CentOs 6.4 (i is a minimal netinstall)
 * Login to your as root
-* wget https://github.com/henkwiedig/SiebelInstaller.git/bootstrap/bootstrap.sh
-* ./bootstrap.sh
+* curl https://raw.github.com/henkwiedig/SiebelInstaller/master/bootstrap/bootstap.sh | sh
+* sh ./bootstrap.sh
 * git clone https://github.com/henkwiedig/SiebelInstaller.git
 * cd SiebelInstaller
-* ./SiebelInstaller
+* ./siebelinstaller.sh
 * wait to complete
 * Login to http://ip-of-your-vm/ecommunication_enu/start.swe
 
