@@ -77,3 +77,46 @@ execute_once ()
     echo "Skipping execution of : $1 \"$2\" please remove $SCRIPT_ROOT/.status/$1_$2 if this is incorrect"
   fi
 }
+
+install_oracle ()
+{
+  #see http://www.oracle-base.com/articles/11g/oracle-db-11gr2-installation-on-oracle-linux-5.php
+
+  cat $SCRIPT_ROOT/templates/oracle_sysctl_$ORACLE_VERSION.conf >> /etc/sysctl.conf
+  /sbin/sysctl -p
+  cat $SCRIPT_ROOT/templates/oracle_limits_$ORACLE_VERSION.conf >> /etc/security/limits.conf
+  yum -y install binutils compat-libstdc++-33 compat-libstdc++-33 elfutils-libelf gcc gcc-c++ glibc glibc-common glibc-devel glibc-headers ksh libaio libaio-devel libgomp libgcc libstdc++ libstdc++-devel make sysstat unixODBC unixODBC-devel numactl-devel xorg-x11-utils xauth elfutils-libelf-devel pdksh compat-libcap1
+  groupadd oinstall
+  groupadd dba
+  groupadd oper
+
+  useradd -g oinstall -G dba,oper oracle
+  sed -i -e 's/^SELINUX=.*$/SELINUX=permissive/' /etc/selinux/config
+  service iptables stop
+  chkconfig iptables off
+  mkdir -p /u01/app/oracle/product/11.2.0/db_1
+  chown -R oracle:oinstall /u01
+  chmod -R o+r,o+x /root/SiebelInstaller/unpack/*
+  chmod -R 775 /u01
+  cat >/home/oracle/.bash_profile <<EOF
+# Oracle Settings
+TMP=/tmp; export TMP
+TMPDIR=\$TMP; export TMPDIR
+
+ORACLE_HOSTNAME=localhost.localdomain; export ORACLE_HOSTNAME
+ORACLE_UNQNAME=orcl; export ORACLE_UNQNAME
+ORACLE_BASE=/u01/app/oracle; export ORACLE_BASE
+ORACLE_HOME=\$ORACLE_BASE/product/11.2.0/db_1; export ORACLE_HOME
+ORACLE_SID=orcl; export ORACLE_SID
+PATH=/usr/sbin:\$PATH; export PATH
+PATH=\$ORACLE_HOME/bin:\$PATH; export PATH
+
+LD_LIBRARY_PATH=\$ORACLE_HOME/lib:/lib:/usr/lib; export LD_LIBRARY_PATH
+CLASSPATH=\$ORACLE_HOME/jlib:\$ORACLE_HOME/rdbms/jlib; export CLASSPATH
+EOF
+  sed -i -e 's/^CV_ASSUME_DISTID=OEL4*$/CV_ASSUME_DISTID=OEL6/' $SCRIPT_ROOT/unpack/oracle_$ORACLE_VERSION/database/stage/cvu/cv/admin/cvu_config
+
+  #TODO: fix hardcoded path, fix response file
+  su -l oracle -c "/root/SiebelInstaller/unpack/oracle_11.2.0.3/database/runInstaller -silent -responseFile /root/SiebelInstaller/templates/oracle_runInstaller_$ORACLE_VERSION.rsp"
+
+}

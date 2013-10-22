@@ -39,4 +39,7 @@ execute_once download_from_mos "ohs_$OHS_VERSION"
 execute_once unpack_product "oracle_$ORACLE_VERSION"
 execute_once unpack_product "siebel_$SIEBEL_VERSION"
 
+#install products
+execute_once install_oracle "oracle_$ORACLE_VERSION"
+
 echo "Done!"
