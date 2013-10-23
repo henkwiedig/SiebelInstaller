@@ -1,9 +1,12 @@
 #!/bin/bash
 yum -y install nfs-utils nfs-utils-lib
 mkdir -p downloads
+mkdir -p unpack
 umount downloads
+umount unpack
 /etc/init.d/rpcbind restart
 /etc/init.d/nfs restart
 /etc/init.d/nfslock restart
 mount 192.168.0.2:/export/downloads/Data/Siebel downloads
+mount 192.168.0.2:/export/downloads/Data/Siebel/unpack unpack
 
