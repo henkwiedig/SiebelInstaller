@@ -1,6 +1,7 @@
 #!/bin/bash
 
-SCRIPT_ROOT=`dirname $0`
+FULL_PATH=`readlink -f $0 ` 
+SCRIPT_ROOT=`dirname $FULL_PATH`
 
 source $SCRIPT_ROOT/config.defaults
 source $SCRIPT_ROOT/` basename $0 .sh`_lib.sh

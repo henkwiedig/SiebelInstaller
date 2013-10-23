@@ -101,7 +101,7 @@ install_oracle ()
   chkconfig iptables off
   mkdir -p /u01/app/oracle/product/11.2.0/db_1
   chown -R oracle:oinstall /u01
-  chmod -R o+r,o+x /root/SiebelInstaller/unpack/*
+#  chmod -R o+r,o+x /root/SiebelInstaller/unpack/*
   chmod -R 775 /u01
   cat >/home/oracle/.bash_profile <<EOF
 # Oracle Settings
@@ -121,8 +121,8 @@ CLASSPATH=\$ORACLE_HOME/jlib:\$ORACLE_HOME/rdbms/jlib; export CLASSPATH
 EOF
   sed -i -e 's/^CV_ASSUME_DISTID=OEL4*$/CV_ASSUME_DISTID=OEL6/' $SCRIPT_ROOT/unpack/oracle_$ORACLE_VERSION/database/stage/cvu/cv/admin/cvu_config
 
-  #TODO: fix hardcoded path, fix response file
-  su -l oracle -c "/root/SiebelInstaller/unpack/oracle_11.2.0.3/database/runInstaller -silent -responseFile /root/SiebelInstaller/templates/oracle_runInstaller_$ORACLE_VERSION.rsp"
+  #TODO: fix response file
+  su -l oracle -c "$SCRIPT_ROOT/SiebelInstaller/unpack/oracle_11.2.0.3/database/runInstaller -silent -responseFile $SCRIPT_ROOT/templates/oracle_runInstaller_$ORACLE_VERSION.rsp"
 #/u01/app/oraInventory/orainstRoot.sh
 #/u01/app/oracle/product/11.2.0/db_1/root.sh
 
