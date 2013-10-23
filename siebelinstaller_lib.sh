@@ -56,6 +56,11 @@ unpack_product  ()
 {
   echo "Unpacking : $1"
   source $SCRIPT_ROOT/products/$1.info
+  if [ -e $SCRIPT_ROOT/unpack/$1 ]
+  then
+    echo "File $SCRIPT_ROOT/unpack/$1 already exists. Skipping ..."
+    return 0
+  fi
   mkdir -p $SCRIPT_ROOT/unpack/$1
 
   for file in $FILES_LIST
