@@ -25,7 +25,7 @@ then
 fi
 
 #Run users pre install script
-[ ! $SCRIPT_ROOT/.status/pre_install_script ] && sh $PRE_INSTALL_SCRIPT && touch $SCRIPT_ROOT/.status/pre_install_script
+[ ! -e $SCRIPT_ROOT/.status/pre_install_script ] && [ -e $SCRIPT_ROOT/pre_install_script ] && sh pre_install_script && touch $SCRIPT_ROOT/.status/pre_install_script
 
 #prepare host
 execute_once prepare_host prepare_host
