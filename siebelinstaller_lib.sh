@@ -123,8 +123,8 @@ EOF
 
   #TODO: fix response file
   su -l oracle -c "$SCRIPT_ROOT/unpack/oracle_11.2.0.3/database/runInstaller -silent -waitforcompletion -responseFile $SCRIPT_ROOT/templates/oracle_runInstaller_$ORACLE_VERSION.rsp"
-#/u01/app/oraInventory/orainstRoot.sh
-#/u01/app/oracle/product/11.2.0/db_1/root.sh
+  /u01/app/oraInventory/orainstRoot.sh
+  /u01/app/oracle/product/11.2.0/db_1/root.sh
 
 
 }
