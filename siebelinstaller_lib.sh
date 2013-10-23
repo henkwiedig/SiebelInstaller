@@ -122,7 +122,7 @@ EOF
   sed -i -e 's/^CV_ASSUME_DISTID=OEL4*$/CV_ASSUME_DISTID=OEL6/' $SCRIPT_ROOT/unpack/oracle_$ORACLE_VERSION/database/stage/cvu/cv/admin/cvu_config
 
   #TODO: fix response file
-  su -l oracle -c "$SCRIPT_ROOT/SiebelInstaller/unpack/oracle_11.2.0.3/database/runInstaller -silent -responseFile $SCRIPT_ROOT/templates/oracle_runInstaller_$ORACLE_VERSION.rsp"
+  su -l oracle -c "$SCRIPT_ROOT/unpack/oracle_11.2.0.3/database/runInstaller -silent -responseFile $SCRIPT_ROOT/templates/oracle_runInstaller_$ORACLE_VERSION.rsp"
 #/u01/app/oraInventory/orainstRoot.sh
 #/u01/app/oracle/product/11.2.0/db_1/root.sh
 
