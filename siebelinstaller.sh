@@ -31,12 +31,14 @@ execute_once prepare_host prepare_host
 
 #download
 execute_once download_from_mos "oracle_$ORACLE_VERSION"
+execute_once download_from_mos "oracle_client_$ORACLE_VERSION"
 execute_once download_from_mos "siebel_$SIEBEL_VERSION"
 execute_once download_from_mos "ohs_$OHS_VERSION"
 execute_once download_and_unpack "java_$JAVA_VERSION"
 
 #unpack products
 execute_once unpack_product "oracle_$ORACLE_VERSION"
+execute_once unpack_product "oracle_client_$ORACLE_VERSION"
 execute_once unpack_product "siebel_$SIEBEL_VERSION"
 execute_once create_siebel_install_image "siebel_$SIEBEL_VERSION"
 
@@ -44,4 +46,9 @@ execute_once create_siebel_install_image "siebel_$SIEBEL_VERSION"
 execute_once install_oracle "oracle_$ORACLE_VERSION"
 execute_once install_siebel_enterprise_server "siebel_$SIEBEL_VERSION"
 
+#configure products
+execute_once configure_siebel_gateway "$SIEBEL_VERSION"
+execute_once create_siebel_database "$SIEBEL_VERSION"
+
 echo "Done!"
+#End of file

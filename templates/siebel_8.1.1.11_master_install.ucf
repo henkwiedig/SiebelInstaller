@@ -1,0 +1,42 @@
+﻿
+[Upgrade]
+Default Entry = TRUE
+Username = sadmin
+Key Value = Wanh0a1d7oEBetkAAA==
+Key Value 2 = 3yRdrsUc3AUBidYAAA==
+ODBC Data Source = Siebel_DSN
+Data Source = Siebel_DSN
+Table Owner = SIEBEL
+Siebel Root = /opt/siebel/8.1.1.11.0/ses/siebsrvr
+Process Name = install
+Language = ENU
+Index Space = SINDEX
+Table Space = SDATA
+16K Table Space = $16KTableSpace
+32K Table Space = $32KTableSpace
+Repository Name = Siebel Repository
+Repository File Name = /opt/siebel/8.1.1.11.0/ses/dbsrvr/common/mstrep.dat
+Seed File Name = /opt/siebel/8.1.1.11.0/ses/dbsrvr/ENU/seed.dat
+Language Specific Seed File Name = /opt/siebel/8.1.1.11.0/ses/dbsrvr/ENU/seed_locale.dat
+Database Platform = oracle
+Database Server = $DatabaseServer
+Schema Qualifier = SIEBEL
+Database Owner = SIEBEL
+Unicode Flag = Y
+Grantee = SSE_ROLE
+Dbsrvr Root = /opt/siebel/8.1.1.11.0/ses/dbsrvr
+Oracle Parallel Index = N
+Keep All UpgWiz Files = 1
+Database Schema Process = 1
+Run Unattended = 1
+Orchestrator Mode = 1
+Resource Language = DEU
+Siebel Log Directory = /opt/siebel/8.1.1.11.0/ses/siebsrvr/log/install/output
+Siebel Log Events = 3
+License Key = $LicenseKey
+Master File Name = master_install.ucf
+
+[Upgrade 1]
+File Name = /opt/siebel/8.1.1.11.0/ses/dbsrvr\oracle\driver_install.ucf
+Is Archived = 0
+Title = install

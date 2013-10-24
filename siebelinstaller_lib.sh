@@ -17,10 +17,10 @@ download_from_mos ()
   LANG=C
   export LANG
 
-  if [ x"$MOS_PASSWORD " = x"CHANGE_ME" ] && [ x"$MOS_USERNAME" = x"foo@bar.com" ]
+  if [ x"$MOS_PASSWORD" = x"CHANGE_ME" ] && [ x"$MOS_USERNAME" = x"foo@bar.com" ]
   then
-    echo "Please set MOS_PASSWORD and MOS_USERNAME in config.local file"
-   exit
+    echo "Please set MOS_PASSWORD and MOS_USERNAME in config.local file" 1>&2
+    exit 1
   fi
 
   echo "Downloading from MOS: $1"
@@ -204,8 +204,8 @@ install_siebel_enterprise_server ()
 # Oracle Settings
 TMP=/tmp; export TMP
 TMPDIR=\$TMP; export TMPDIR
-ORACLE_BASE=/u01/app/oracle; export ORACLE_BASE
-ORACLE_HOME=\$ORACLE_BASE/product/11.2.0/db_1; export ORACLE_HOME
+ORACLE_BASE=/opt/siebel/app/oracle; export ORACLE_BASE
+ORACLE_HOME=\$ORACLE_BASE/product/11.2.0/client_1; export ORACLE_HOME
 ORACLE_SID=orcl; export ORACLE_SID
 PATH=/usr/sbin:\$PATH; export PATH
 PATH=\$ORACLE_HOME/bin:\$PATH; export PATH
@@ -214,6 +214,19 @@ EOF
   cp $SCRIPT_ROOT/templates/install_siebel_enterprise_server_8.1.1.11.rsp $SCRIPT_ROOT/unpack/siebel_install_image_$SIEBEL_VERSION/$SIEBEL_VERSION/Linux/Server/Siebel_Enterprise_Server/Disk1/install/
   sed -i -e "s,CHANGE_ME,$SCRIPT_ROOT/unpack/siebel_install_image_$SIEBEL_VERSION/$SIEBEL_VERSION," $SCRIPT_ROOT/unpack/siebel_install_image_$SIEBEL_VERSION/$SIEBEL_VERSION/Linux/Server/Siebel_Enterprise_Server/Disk1/install/install_siebel_enterprise_server_8.1.1.11.rsp
   echo "" | su -l siebel -c "$SCRIPT_ROOT/unpack/siebel_install_image_$SIEBEL_VERSION/$SIEBEL_VERSION/Linux/Server/Siebel_Enterprise_Server/Disk1/install/runInstaller -silent -waitforcompletion -responseFile $SCRIPT_ROOT/unpack/siebel_install_image_$SIEBEL_VERSION/$SIEBEL_VERSION/Linux/Server/Siebel_Enterprise_Server/Disk1/install/install_siebel_enterprise_server_8.1.1.11.rsp"
+}
+
+configure_siebel_gateway () {
+  su -l siebel -c "cd /opt/siebel/8.1.1.11.0/ses/config/; source /opt/siebel/8.1.1.11.0/ses/gtwysrvr/cfgenv.sh; /opt/siebel/8.1.1.11.0/ses/config/config.sh -mode enterprise  -responseFile $SCRIPT_ROOT/templates/siebel_configure_gateway_$SIEBEL_VERSION.rsp"
+}
+
+create_siebel_database ()
+{
+  su -l oracle -c "sqlplus / as sysdba @$SCRIPT_ROOT/sql/create_tablespace_sdata.sql"
+  su -l oracle -c "sqlplus / as sysdba @$SCRIPT_ROOT/sql/create_tablespace_sindex.sql"
+  su -l oracle -c "sqlplus / as sysdba @$SCRIPT_ROOT/sql/grantusr.sql"
+  #su -l siebel -c "cat $SCRIPT_ROOT/templates/siebel_${SIEBEL_VERSION}_master_install.ucf > /opt/siebel/8.1.1.11.0/ses/siebsrvr/bin/master_install.ucf; source /opt/siebel/8.1.1.11.0/ses/gtwysrvr/siebenv.sh;:wq
+
 }
 
 #End of file

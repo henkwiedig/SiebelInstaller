@@ -1,0 +1,3 @@
+FILES_LIST="FILE1"
+FILE1_URL='https://updates.oracle.com/Orion/Services/download/p10404530_112030_LINUX_4of7.zip?aru=14125325&patch_file=p10404530_112030_LINUX_4of7.zip'
+FILE1_NAME='p10404530_112030_LINUX_4of7.zip'
