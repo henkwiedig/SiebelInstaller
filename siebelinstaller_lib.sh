@@ -220,12 +220,26 @@ configure_siebel_gateway () {
   su -l siebel -c "cd /opt/siebel/8.1.1.11.0/ses/config/; source /opt/siebel/8.1.1.11.0/ses/gtwysrvr/cfgenv.sh; /opt/siebel/8.1.1.11.0/ses/config/config.sh -mode enterprise  -responseFile $SCRIPT_ROOT/templates/siebel_configure_gateway_$SIEBEL_VERSION.rsp"
 }
 
+install_oracle_client ()
+{
+  yum -y install libaio.i686 libaio-devel.i686 compat-libstdc++-33.686 compat-libstdc++-33.i686 glibc-devel.i686 libstdc++-devel.i686
+  sed -i -e 's/^CV_ASSUME_DISTID=OEL4*$/CV_ASSUME_DISTID=OEL6/' $SCRIPT_ROOT/unpack/oracle_client_$ORACLE_VERSION/client/stage/cvu/cv/admin/cvu_config
+  mkdir -p /opt/siebel/oracle_client/oraInventory
+cat > /opt/siebel/oracle_client/oraInst.loc <<EOF
+inventory_loc=/opt/siebel/oracle_client/oraInventory
+inst_group=siebel
+EOF
+  chown -R siebel:siebel /opt/siebel/oracle_client/
+  su -l siebel -c "$SCRIPT_ROOT/unpack/oracle_client_$ORACLE_VERSION/client/runInstaller -invPtrLoc /opt/siebel/oracle_cleint/oraInst.loc -silent -waitforcompletion -responseFile $SCRIPT_ROOT/templates/oracle_client_runInstaller_$ORACLE_VERSION.rsp"
+  cat /u01/app/oracle/product/11.2.0/db_1/network/admin/tnsnames.ora > $ORACLE_HOME/network/admin/tnsnames.ora 
+}
+
 create_siebel_database ()
 {
   su -l oracle -c "sqlplus / as sysdba @$SCRIPT_ROOT/sql/create_tablespace_sdata.sql"
   su -l oracle -c "sqlplus / as sysdba @$SCRIPT_ROOT/sql/create_tablespace_sindex.sql"
   su -l oracle -c "sqlplus / as sysdba @$SCRIPT_ROOT/sql/grantusr.sql"
-  #su -l siebel -c "cat $SCRIPT_ROOT/templates/siebel_${SIEBEL_VERSION}_master_install.ucf > /opt/siebel/8.1.1.11.0/ses/siebsrvr/bin/master_install.ucf; source /opt/siebel/8.1.1.11.0/ses/gtwysrvr/siebenv.sh;:wq
+  su -l siebel -c "cat $SCRIPT_ROOT/templates/siebel_${SIEBEL_VERSION}_master_install.ucf > /opt/siebel/8.1.1.11.0/ses/siebsrvr/bin/master_install.ucf; source /opt/siebel/8.1.1.11.0/ses/siebsrvr/cfgenv.sh; source /opt/siebel/8.1.1.11.0/ses/gtwysrvr/siebenv.sh; cd /opt/siebel/8.1.1.11.0/ses/siebsrvr/bin/ ; srvrupgwiz /m master_install.ucf"
 
 }
 
