@@ -129,6 +129,11 @@ install_oracle ()
 {
   #see http://www.oracle-base.com/articles/11g/oracle-db-11gr2-installation-on-oracle-linux-5.php
 
+  if [ -e /u01/app/oracle/oradata ]
+  then
+    echo "Oracle already installed. Skipping...."
+    return 0
+  fi
   cat $SCRIPT_ROOT/templates/oracle_sysctl_$ORACLE_VERSION.conf >> /etc/sysctl.conf
   /sbin/sysctl -p
   cat $SCRIPT_ROOT/templates/oracle_limits_$ORACLE_VERSION.conf >> /etc/security/limits.conf
