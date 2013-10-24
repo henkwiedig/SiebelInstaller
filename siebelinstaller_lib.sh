@@ -232,7 +232,7 @@ inst_group=siebel
 EOF
   chown -R siebel:siebel /opt/siebel/oracle_client/
   su -l siebel -c "$SCRIPT_ROOT/unpack/oracle_client_$ORACLE_VERSION/client/runInstaller -invPtrLoc /opt/siebel/oracle_cleint/oraInst.loc -silent -waitforcompletion -responseFile $SCRIPT_ROOT/templates/oracle_client_runInstaller_$ORACLE_VERSION.rsp"
-  cat /u01/app/oracle/product/11.2.0/db_1/network/admin/tnsnames.ora > $ORACLE_HOME/network/admin/tnsnames.ora 
+  su -l siebel -c "cat /u01/app/oracle/product/11.2.0/db_1/network/admin/tnsnames.ora > $ORACLE_HOME/network/admin/tnsnames.ora"
 }
 
 create_siebel_database ()
