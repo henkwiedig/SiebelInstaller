@@ -1,0 +1,39 @@
+#!/bin/sh
+# chkconfig: 345 99 10
+# description: Oracle auto start-stop script.
+#
+# Set ORA_HOME to be equivalent to the $ORACLE_HOME
+# from which you wish to execute dbstart and dbshut;
+#
+# Set ORA_OWNER to the user id of the owner of the 
+# Oracle database in ORA_HOME.
+# See: http://www.oracle-base.com/articles/linux/automating-database-startup-and-shutdown-on-linux.php
+
+ORA_HOME=/u01/app/oracle/product/11.2.0/db_1
+ORA_OWNER=oracle
+export ORACLE_UNQNAME=orcl
+
+if [ ! -f $ORA_HOME/bin/dbstart ]
+then
+    echo "Oracle startup: cannot start"
+    exit
+fi
+
+case "$1" in
+    'start')
+        # Start the Oracle databases:
+        # The following command assumes that the oracle login 
+        # will not prompt the user for any values
+        su -l $ORA_OWNER -c "$ORA_HOME/bin/dbstart $ORA_HOME"
+        su -l $ORA_OWNER -c "$ORA_HOME/bin/emctl start dbconsole"
+        touch /var/lock/subsys/dbora
+        ;;
+    'stop')
+        # Stop the Oracle databases:
+        # The following command assumes that the oracle login 
+        # will not prompt the user for any values
+        su -l $ORA_OWNER -c "$ORA_HOME/bin/emctl stop dbconsole"
+        su -l $ORA_OWNER -c "$ORA_HOME/bin/dbshut $ORA_HOME"
+        rm -f /var/lock/subsys/dbora
+        ;;
+esac

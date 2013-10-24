@@ -107,7 +107,6 @@ install_oracle ()
   chkconfig iptables off
   mkdir -p /u01/app/oracle/product/11.2.0/db_1
   chown -R oracle:oinstall /u01
-#  chmod -R o+r,o+x /root/SiebelInstaller/unpack/*
   chmod -R 775 /u01
   cat >/home/oracle/.bash_profile <<EOF
 # Oracle Settings
@@ -131,6 +130,8 @@ EOF
   su -l oracle -c "$SCRIPT_ROOT/unpack/oracle_11.2.0.3/database/runInstaller -silent -waitforcompletion -responseFile $SCRIPT_ROOT/templates/oracle_runInstaller_$ORACLE_VERSION.rsp"
   /u01/app/oraInventory/orainstRoot.sh
   /u01/app/oracle/product/11.2.0/db_1/root.sh
-
+  cp templates/oracle_$ORACLE_VERSION.dbora /etc/init.d/dbora
+  chkconfig --add dbora
+  sed -i -e 's/^orcl:\/u01\/app\/oracle\/product\/11.2.0\/db_1:N/orcl:\/u01\/app\/oracle\/product\/11.2.0\/db_1:Y/' /etc/oratab
 
 }

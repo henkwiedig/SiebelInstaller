@@ -19,7 +19,7 @@ then
   echo "Please do not run in /root."
   exit 1
 fi
-exit
+
 mkdir -p $SCRIPT_ROOT/log
 mkdir -p $SCRIPT_ROOT/.status
 
