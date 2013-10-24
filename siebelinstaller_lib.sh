@@ -13,6 +13,12 @@ download_from_mos ()
   LANG=C
   export LANG
 
+  if [ x"$MOS_PASSWORD " = x"CHANGE_ME" ] && [ x"$MOS_USERNAME" = x"foo@bar.com" ]
+  then
+    echo "Please set MOS_PASSWORD and MOS_USERNAME in config.local file"
+   exit
+  fi
+
   echo "Downloading from MOS: $1"
   source $SCRIPT_ROOT/products/$1.info
 

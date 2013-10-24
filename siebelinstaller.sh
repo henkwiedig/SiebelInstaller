@@ -23,12 +23,6 @@ exit
 mkdir -p $SCRIPT_ROOT/log
 mkdir -p $SCRIPT_ROOT/.status
 
-if [ x"$MOS_PASSWORD " = x"CHANGE_ME" ] && [ x"$MOS_USERNAME" = x"foo@bar.com" ]
-then
- echo "Please set MOS_PASSWORD and MOS_USERNAME in config.local file"
- exit
-fi
-
 #Run users pre install script
 [ ! -e $SCRIPT_ROOT/.status/pre_install_script ] && [ -e $SCRIPT_ROOT/pre_install_script ] && sh pre_install_script && touch $SCRIPT_ROOT/.status/pre_install_script
 
