@@ -119,7 +119,7 @@ execute_once ()
   if [ ! -e $SCRIPT_ROOT/.status/$1_$2 ]
   then
     echo "Executing: $1 \"$2\""
-    $1 "$2" && touch $SCRIPT_ROOT/.status/$1_$2 >> $SCRIPT_ROOT/log/${1}_${2}.log
+    $1 "$2" >> $SCRIPT_ROOT/log/$1_$2.log && touch $SCRIPT_ROOT/.status/$1_$2
   else
     echo "Skipping execution of : $1 \"$2\" please remove $SCRIPT_ROOT/.status/$1_$2 if this is incorrect"
   fi
