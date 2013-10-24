@@ -163,7 +163,7 @@ EOF
   sed -i -e 's/^CV_ASSUME_DISTID=OEL4*$/CV_ASSUME_DISTID=OEL6/' $SCRIPT_ROOT/unpack/oracle_$ORACLE_VERSION/database/stage/cvu/cv/admin/cvu_config
 
   #TODO: fix response file
-  su -l oracle -c "$SCRIPT_ROOT/unpack/oracle_11.2.0.3/database/runInstaller -silent -waitforcompletion -responseFile $SCRIPT_ROOT/templates/oracle_runInstaller_$ORACLE_VERSION.rsp"
+  su -l oracle -c "$SCRIPT_ROOT/unpack/oracle_11.2.0.3/database/runInstaller -silent -waitforcompletion -responseFile $SCRIPT_ROOT/templates/oracle_runInstaller_$ORACLE_VERSION.rsp" 
   /u01/app/oraInventory/orainstRoot.sh
   /u01/app/oracle/product/11.2.0/db_1/root.sh
   cp templates/oracle_$ORACLE_VERSION.dbora /etc/init.d/dbora
@@ -176,8 +176,10 @@ create_siebel_install_image ()
 {
   cp $SCRIPT_ROOT/templates/siebel_snic_${SIEBEL_VERSION}.rsp $SCRIPT_ROOT/unpack/siebel_$SIEBEL_VERSION
   sed -i -e "s,CHANGE_ME,$SCRIPT_ROOT/unpack/siebel_install_image_$SIEBEL_VERSION," $SCRIPT_ROOT/unpack/siebel_$SIEBEL_VERSION/siebel_snic_${SIEBEL_VERSION}.rsp
-  $SCRIPT_ROOT/unpack/siebel_$SIEBEL_VERSION/snic.sh -silent -responseFile $SCRIPT_ROOT/unpack/siebel_$SIEBEL_VERSION/siebel_snic_${SIEBEL_VERSION}.rsp
+  OLD_LANG=$LANG
+  export LANG=C
+  $SCRIPT_ROOT/unpack/siebel_$SIEBEL_VERSION/snic.sh -silent -responseFile $SCRIPT_ROOT/unpack/siebel_$SIEBEL_VERSION/siebel_snic_${SIEBEL_VERSION}.rsp > $SCRIPT_ROOT/log/create_siebel_install_image_${SIEBEL_VERSION}.log
+  export LANG=$OLD_LANG
 }
-
 
 #End of file
