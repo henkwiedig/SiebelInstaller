@@ -189,7 +189,7 @@ create_siebel_install_image ()
 
 install_siebel_enterprise_server ()
 {
-  yum -y install glibc.i686 libXmu.i686 libXtst.i686
+  yum -y install glibc.i686 libXmu.i686 libXtst.i686  libstdc++.x86_64 libstdc++.i686  compat-libstdc++-33.i686 compat-libstdc++-33.x86_64
   groupadd siebel
 
   useradd -g siebel -G siebel,oinstall siebel
