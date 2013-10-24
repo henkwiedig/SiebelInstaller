@@ -1,0 +1,4 @@
+FILES_LIST="FILE1"
+FILE1_URL='http://javadl.sun.com/webapps/download/AutoDL?BundleId=81812'
+FILE1_NAME='jre-7u45-linux-x64.tar.gz'
+FILE1_TARGET_PATH='/opt'

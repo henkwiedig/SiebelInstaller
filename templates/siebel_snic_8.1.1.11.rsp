@@ -1,0 +1,5 @@
+imageVersion="8.1.1.11"
+imageDirectory="CHANGE_ME"
+platformList={Linux}
+productList={Siebel_Enterprise_Server,Siebel_Web_Server_Extension}
+languageList={ENU}

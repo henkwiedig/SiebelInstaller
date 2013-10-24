@@ -3,6 +3,10 @@
 prepare_host ()
 {
   yum -y install zip unzip
+  #TODO make the following dynamic
+  echo 'export JAVA_HOME=/opt/jre1.7.0_45' >> /etc/profile
+  echo 'export PATH=$PATH:$JAVA_HOME/bin' >> /etc/profile
+  source /etc/profile
 }
 
 download_from_mos ()
@@ -56,6 +60,38 @@ download_from_mos ()
   rm -f $COOKIE_FILE
   export LANG=$OLD_LANG
   return 0
+}
+
+download_and_unpack ()
+{
+
+  echo "Downloading : $1"
+  source $SCRIPT_ROOT/products/$1.info
+
+  WGET="/usr/bin/wget --no-check-certificate"
+  LOGFILE=$SCRIPT_ROOT/log/wgetlog-$1.log
+  OUTPUT_DIR=$SCRIPT_ROOT/downloads/$1
+  mkdir -p $SCRIPT_ROOT/downloads/$1
+  for file in $FILES_LIST
+  do
+    file_url=$(eval "echo \$${file}_URL")
+    file_name=$(eval "echo \$${file}_NAME")
+    file_dest_path=$(eval "echo \$${file}_TARGET_PATH")
+    if [ -e $OUTPUT_DIR/$file_name ]
+    then
+      echo "File $OUTPUT_DIR/$file_name already exists. Skipping ..."
+    else
+      $WGET $file_url -O $OUTPUT_DIR/$file_name >> $LOGFILE 2>&1
+      case $file_name in
+        *.tar.gz)
+          tar zxf $OUTPUT_DIR/$file_name -C $file_dest_path
+          ;;
+        *)
+          echo "File extention unknown"
+          ;;
+      esac
+    fi
+  done
 }
 
 unpack_product  ()
@@ -135,3 +171,13 @@ EOF
   sed -i -e 's/^orcl:\/u01\/app\/oracle\/product\/11.2.0\/db_1:N/orcl:\/u01\/app\/oracle\/product\/11.2.0\/db_1:Y/' /etc/oratab
 
 }
+
+create_siebel_install_image ()
+{
+  cp $SCRIPT_ROOT/templates/siebel_snic_${SIEBEL_VERSION}.rsp $SCRIPT_ROOT/unpack/siebel_$SIEBEL_VERSION
+  sed -i -e "s,CHANGE_ME,$SCRIPT_ROOT/unpack/siebel_install_image_$SIEBEL_VERSION," $SCRIPT_ROOT/unpack/siebel_$SIEBEL_VERSION/siebel_snic_${SIEBEL_VERSION}.rsp
+  $SCRIPT_ROOT/unpack/siebel_$SIEBEL_VERSION/snic.sh -silent -responseFile $SCRIPT_ROOT/unpack/siebel_$SIEBEL_VERSION/siebel_snic_${SIEBEL_VERSION}.rsp
+}
+
+
+#End of file

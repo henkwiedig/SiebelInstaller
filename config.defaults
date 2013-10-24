@@ -16,3 +16,5 @@ ORACLE_VERSION=11.2.0.3
 SIEBEL_VERSION=8.1.1.11
 #default Oracle Webserver to intall
 OHS_VERSION=11.1.1.7
+#Java Version
+JAVA_VERSION=7u45

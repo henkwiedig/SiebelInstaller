@@ -33,12 +33,13 @@ execute_once prepare_host prepare_host
 execute_once download_from_mos "oracle_$ORACLE_VERSION"
 execute_once download_from_mos "siebel_$SIEBEL_VERSION"
 execute_once download_from_mos "ohs_$OHS_VERSION"
+execute_once download_and_unpack "java_$JAVA_VERSION"
 
 #unpack products
 execute_once unpack_product "oracle_$ORACLE_VERSION"
 execute_once unpack_product "siebel_$SIEBEL_VERSION"
+execute_once create_siebel_install_image "siebel_$SIEBEL_VERSION"
 
 #install products
 execute_once install_oracle "oracle_$ORACLE_VERSION"
-
 echo "Done!"
