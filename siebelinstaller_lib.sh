@@ -210,6 +210,7 @@ ORACLE_SID=orcl; export ORACLE_SID
 PATH=/usr/sbin:\$PATH; export PATH
 PATH=\$ORACLE_HOME/bin:\$PATH; export PATH
 LD_LIBRARY_PATH=\$ORACLE_HOME/lib:/lib:/usr/lib; export LD_LIBRARY_PATH
+RESOLV_MULTI=off ; export RESOLV_MULTI
 EOF
   cp $SCRIPT_ROOT/templates/install_siebel_enterprise_server_8.1.1.11.rsp $SCRIPT_ROOT/unpack/siebel_install_image_$SIEBEL_VERSION/$SIEBEL_VERSION/Linux/Server/Siebel_Enterprise_Server/Disk1/install/
   sed -i -e "s,CHANGE_ME,$SCRIPT_ROOT/unpack/siebel_install_image_$SIEBEL_VERSION/$SIEBEL_VERSION," $SCRIPT_ROOT/unpack/siebel_install_image_$SIEBEL_VERSION/$SIEBEL_VERSION/Linux/Server/Siebel_Enterprise_Server/Disk1/install/install_siebel_enterprise_server_8.1.1.11.rsp
@@ -241,6 +242,20 @@ create_siebel_database ()
   su -l oracle -c "sqlplus / as sysdba @$SCRIPT_ROOT/sql/grantusr.sql"
   su -l siebel -c "cat $SCRIPT_ROOT/templates/siebel_${SIEBEL_VERSION}_master_install.ucf > /opt/siebel/8.1.1.11.0/ses/siebsrvr/bin/master_install.ucf; source /opt/siebel/8.1.1.11.0/ses/siebsrvr/cfgenv.sh; source /opt/siebel/8.1.1.11.0/ses/gtwysrvr/siebenv.sh; cd /opt/siebel/8.1.1.11.0/ses/siebsrvr/bin/ ; srvrupgwiz /m master_install.ucf"
 
+}
+
+configure_siebel_enterprise () {
+  mkdir -p /opt/siebel/8.1.1.11.0/ses/gtwysrvr/fs
+  chown -R siebel:siebel /opt/siebel/8.1.1.11.0/ses/gtwysrvr/fs
+  su -l siebel -c "cd /opt/siebel/8.1.1.11.0/ses/config/; source /opt/siebel/8.1.1.11.0/ses/gtwysrvr/siebenv.sh; /opt/siebel/8.1.1.11.0/ses/config/config.sh -mode enterprise -responseFile $SCRIPT_ROOT/templates/siebel_configure_enterprise_$SIEBEL_VERSION.rsp"
+}
+
+configure_siebel_swe_profile () {
+  su -l siebel -c "cd /opt/siebel/8.1.1.11.0/ses/config/; source /opt/siebel/8.1.1.11.0/ses/gtwysrvr/siebenv.sh; /opt/siebel/8.1.1.11.0/ses/config/config.sh -mode enterprise -responseFile $SCRIPT_ROOT/templates/siebel_configure_swe_profile_$SIEBEL_VERSION.rsp"
+}
+
+configure_siebel_server () {
+  su -l siebel -c "cd /opt/siebel/8.1.1.11.0/ses/config/; source /opt/siebel/8.1.1.11.0/ses/siebsrvr/cfgenv.sh; /opt/siebel/8.1.1.11.0/ses/config/config.sh -mode siebsrvr -responseFile $SCRIPT_ROOT/templates/siebel_configure_siebel_server_$SIEBEL_VERSION.rsp"
 }
 
 #End of file

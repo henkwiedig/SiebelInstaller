@@ -50,6 +50,9 @@ execute_once install_oracle_client "oracle_client_$ORACLE_VERSION"
 #configure products
 execute_once configure_siebel_gateway "$SIEBEL_VERSION"
 execute_once create_siebel_database "$SIEBEL_VERSION"
+execute_once configure_siebel_enterprise "$SIEBEL_VERSION"
+execute_once configure_siebel_swe_profile "$SIEBEL_VERSION"
+execute_once configure_siebel_server "$SIEBEL_VERSION"
 
 echo "Done!"
 #End of file
