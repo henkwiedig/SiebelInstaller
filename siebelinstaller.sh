@@ -9,13 +9,17 @@ source $SCRIPT_ROOT/` basename $0 .sh`_lib.sh
 if [ -e $SCRIPT_ROOT/config.local ]
 then
   source $SCRIPT_ROOT/config.local
-else 
-  echo "Please create $SCRIPT_ROOT/config.local and set MOS_PASSWORD and MOS_USERNAME"
-  exit 1
 fi
 
 cd $SCRIPT_ROOT
-
+PWD=`pwd` 
+IS_ROOT=` echo $PWD | cut -c 2-5`
+if [ x$IS_ROOT = xroot ]
+then
+  echo "Please do not run in /root."
+  exit 1
+fi
+exit
 mkdir -p $SCRIPT_ROOT/log
 mkdir -p $SCRIPT_ROOT/.status
 
