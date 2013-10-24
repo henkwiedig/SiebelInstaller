@@ -1,0 +1,16 @@
+RESPONSEFILE_VERSION=2.2.1.0.0
+s_shiphomeLocation="CHANGE_ME/Linux/Server/Siebel_Enterprise_Server/Disk1"
+FROM_LOCATION="CHANGE_ME/Linux/Server/Siebel_Enterprise_Server/Disk1/stage/products.xml"
+s_topLevelComp="oracle.siebel.ses"
+s_SiebelVersion="8.1.1.11.0"
+s_installType="New Installation"
+ORACLE_HOME="/opt/siebel/8.1.1.11.0/ses"
+ORACLE_HOME_NAME="SES_HOME"
+b_isGatewayInstalled="true"
+b_isSiebsrvrInstalled="true"
+b_isDBInstalled="true"
+b_isEAIInstalled="false"
+selectedLangs="[English]"
+DEINSTALL_LIST={"oracle.siebel.ses","8.1.1.11.0"}
+SHOW_DEINSTALL_CONFIRMATION=true
+SHOW_DEINSTALL_PROGRESS=true

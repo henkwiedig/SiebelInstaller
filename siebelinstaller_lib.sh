@@ -187,4 +187,28 @@ create_siebel_install_image ()
   fi
 }
 
+install_siebel_enterprise_server ()
+{
+  yum -y install glibc.i686 libXmu.i686 libXtst.i686
+  groupadd siebel
+
+  useradd -g siebel -G siebel,oinstall siebel
+  mkdir -p /opt/siebel
+  chown -R siebel:siebel /opt/siebel
+  cat >/home/siebel/.bash_profile <<EOF
+# Oracle Settings
+TMP=/tmp; export TMP
+TMPDIR=\$TMP; export TMPDIR
+ORACLE_BASE=/u01/app/oracle; export ORACLE_BASE
+ORACLE_HOME=\$ORACLE_BASE/product/11.2.0/db_1; export ORACLE_HOME
+ORACLE_SID=orcl; export ORACLE_SID
+PATH=/usr/sbin:\$PATH; export PATH
+PATH=\$ORACLE_HOME/bin:\$PATH; export PATH
+LD_LIBRARY_PATH=\$ORACLE_HOME/lib:/lib:/usr/lib; export LD_LIBRARY_PATH
+EOF
+  cp $SCRIPT_ROOT/templates/install_siebel_enterprise_server_8.1.1.11.rsp $SCRIPT_ROOT/unpack/siebel_install_image_$SIEBEL_VERSION/$SIEBEL_VERSION/Linux/Server/Siebel_Enterprise_Server/Disk1/install/
+  sed -i -e "s,CHANGE_ME,$SCRIPT_ROOT/unpack/siebel_install_image_$SIEBEL_VERSION/$SIEBEL_VERSION," $SCRIPT_ROOT/unpack/siebel_install_image_$SIEBEL_VERSION/$SIEBEL_VERSION/Linux/Server/Siebel_Enterprise_Server/Disk1/install/install_siebel_enterprise_server_8.1.1.11.rsp
+  su -l siebel -c "$SCRIPT_ROOT/unpack/siebel_install_image_$SIEBEL_VERSION/$SIEBEL_VERSION/Linux/Server/Siebel_Enterprise_Server/Disk1/install/runInstaller -silent -waitforcompletion -responseFile $SCRIPT_ROOT/unpack/siebel_install_image_$SIEBEL_VERSION/$SIEBEL_VERSION/Linux/Server/Siebel_Enterprise_Server/Disk1/install/install_siebel_enterprise_server_8.1.1.11.rsp"
+}
+
 #End of file

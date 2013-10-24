@@ -42,4 +42,6 @@ execute_once create_siebel_install_image "siebel_$SIEBEL_VERSION"
 
 #install products
 execute_once install_oracle "oracle_$ORACLE_VERSION"
+execute_once install_siebel_enterprise_server "siebel_$SIEBEL_VERSION"
+
 echo "Done!"
