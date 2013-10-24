@@ -174,12 +174,17 @@ EOF
 
 create_siebel_install_image ()
 {
-  cp $SCRIPT_ROOT/templates/siebel_snic_${SIEBEL_VERSION}.rsp $SCRIPT_ROOT/unpack/siebel_$SIEBEL_VERSION
-  sed -i -e "s,CHANGE_ME,$SCRIPT_ROOT/unpack/siebel_install_image_$SIEBEL_VERSION," $SCRIPT_ROOT/unpack/siebel_$SIEBEL_VERSION/siebel_snic_${SIEBEL_VERSION}.rsp
-  OLD_LANG=$LANG
-  export LANG=C
-  $SCRIPT_ROOT/unpack/siebel_$SIEBEL_VERSION/snic.sh -silent -responseFile $SCRIPT_ROOT/unpack/siebel_$SIEBEL_VERSION/siebel_snic_${SIEBEL_VERSION}.rsp > $SCRIPT_ROOT/log/create_siebel_install_image_${SIEBEL_VERSION}.log
-  export LANG=$OLD_LANG
+  if [ ! -e $SCRIPT_ROOT/unpack/siebel_install_image_$SIEBEL_VERSION ]
+  then 
+    cp $SCRIPT_ROOT/templates/siebel_snic_${SIEBEL_VERSION}.rsp $SCRIPT_ROOT/unpack/siebel_$SIEBEL_VERSION
+    sed -i -e "s,CHANGE_ME,$SCRIPT_ROOT/unpack/siebel_install_image_$SIEBEL_VERSION," $SCRIPT_ROOT/unpack/siebel_$SIEBEL_VERSION/siebel_snic_${SIEBEL_VERSION}.rsp
+    OLD_LANG=$LANG
+    export LANG=C
+    $SCRIPT_ROOT/unpack/siebel_$SIEBEL_VERSION/snic.sh -silent -responseFile $SCRIPT_ROOT/unpack/siebel_$SIEBEL_VERSION/siebel_snic_${SIEBEL_VERSION}.rsp > $SCRIPT_ROOT/log/create_siebel_install_image_${SIEBEL_VERSION}.log
+    export LANG=$OLD_LANG
+  else
+    echo "Siebel Install Image $SCRIPT_ROOT/unpack/siebel_install_image_$SIEBEL_VERSION exists. Skipping ..."
+  fi
 }
 
 #End of file
