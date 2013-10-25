@@ -1,0 +1,32 @@
+﻿
+[Upgrade]
+Default Entry = TRUE
+Username = sadmin
+Key Value = l9HEZURHss0BXM8AAA==
+Key Value 2 = jQKIhMLhxRkBCbQAAA==
+ODBC Data Source = Siebel_DSN
+Data Source = Siebel_DSN
+Table Owner = SIEBEL
+Siebel Root = /opt/siebel/8.1.1.11.0/ses/siebsrvr
+Process Name = imprep
+Language = ENU
+Repository Name = Siebel Repository
+Repository File Name = /opt/siebel/8.1.1.11.0/ses/dbsrvr/common/mstrep.dat
+Database Platform = oracle
+Schema Qualifier = SIEBEL
+Database Owner = SIEBEL
+Unicode Flag = $UnicodeFlag
+Dbsrvr Root = /opt/siebel/8.1.1.11.0/ses/dbsrvr
+Keep All UpgWiz Files = 1
+Database Schema Process = 1
+Run Unattended = 1
+Orchestrator Mode = 1
+Resource Language = ENU
+Siebel Log Directory = /opt/siebel/8.1.1.11.0/ses/siebsrvr/log/imprep/output
+Siebel Log Events = 3
+Master File Name = master_imprep.ucf
+
+[Upgrade 1]
+File Name = /opt/siebel/8.1.1.11.0/ses/dbsrvr\oracle\driver_imprep.ucf
+Is Archived = 0
+Title = imprep

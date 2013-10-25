@@ -258,4 +258,8 @@ configure_siebel_server () {
   su -l siebel -c "cd /opt/siebel/8.1.1.11.0/ses/config/; source /opt/siebel/8.1.1.11.0/ses/siebsrvr/cfgenv.sh; /opt/siebel/8.1.1.11.0/ses/config/config.sh -mode siebsrvr -responseFile $SCRIPT_ROOT/templates/siebel_configure_siebel_server_$SIEBEL_VERSION.rsp"
 }
 
+import_repository () {
+  su -l siebel -c "cat $SCRIPT_ROOT/templates/siebel_import_repository_${SIEBEL_VERSION}.ucf > /opt/siebel/8.1.1.11.0/ses/siebsrvr/bin/master_imprep.ucf ; source /opt/siebel/8.1.1.11.0/ses/siebsrvr/siebenv.sh; cd /opt/siebel/8.1.1.11.0/ses/siebsrvr/bin/ ; srvrupgwiz /m master_imprep.ucf"
+}
+
 #End of file
