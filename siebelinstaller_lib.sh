@@ -289,7 +289,7 @@ ohs_reconfigure () {
   sed -i -e 's,LoadModule swe_module modules/libmod_swe.so,LoadModule swe_module ${ORACLE_HOME}/ohs/modules/libmod_swe.so,' /opt/siebel/oracle/Middleware/Oracle_WT1/ohs/conf/httpd.conf
   chown root /opt/siebel/oracle/Middleware/Oracle_WT1/ohs/bin/.apachectl
   chmod 6750 /opt/siebel/oracle/Middleware/Oracle_WT1/ohs/bin/.apachectl
-  sed -i -e 's,#set ulimit for OHS to dump core when it crashes,LD_LIBRARY_PATH=/opt/siebel/8.1.1.11.0/eappweb/bin/:/opt/siebel/8.1.1.11.0/eappweb/bin/enu ; export LD_LIBRARY_PATH\n#set ulimit for OHS to dump core when it crashes,' /opt/siebel/oracle/Middleware/Oracle_WT1/ohs/bin/apachectl
+  sed -i -e 's,#set ulimit for OHS to dump core when it crashes,LD_LIBRARY_PATH=/opt/siebel/8.1.1.11.0/eappweb/bin/:/opt/siebel/8.1.1.11.0/eappweb/bin/enu ; export LD_LIBRARY_PATH\nRESOLV_MULTI=off ; export RESOLV_MULTI\n#set ulimit for OHS to dump core when it crashes,' /opt/siebel/oracle/Middleware/Oracle_WT1/ohs/bin/apachectl
   su -l siebel -c "export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/opt/siebel/8.1.1.11.0/eappweb/bin; \
   export ORACLE_HOME=/opt/siebel/oracle/Middleware/Oracle_WT1 ; \
   export ORACLE_INSTANCE=/opt/siebel/oracle/Middleware/Oracle_WT1/instances/instance1 ; \
