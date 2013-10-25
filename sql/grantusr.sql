@@ -21,6 +21,16 @@ create user SADMIN identified by sadmin;
 grant sse_role to SADMIN;
 alter user SADMIN default tablespace SDATA;
 alter user SADMIN temporary tablespace TEMP;
+
+create user GUESTCP identified by guestcp;
+grant sse_role to GUESTCP;
+alter user GUESTCP default tablespace SDATA;
+alter user GUESTCP temporary tablespace TEMP;
+
+create user GUESTERM identified by guesterm;
+grant sse_role to GUESTERM;
+alter user GUESTERM default tablespace SDATA;
+alter user GUESTERM temporary tablespace TEMP;
 /
 exit
 /
