@@ -121,7 +121,7 @@ execute_once ()
     echo "Executing: $1 \"$2\""
     $1 "$2" >> $SCRIPT_ROOT/log/$1_$2.log && touch $SCRIPT_ROOT/.status/$1_$2
   else
-    echo "Skipping execution of : $1 \"$2\" please remove $SCRIPT_ROOT/.status/$1_$2 if this is incorrect"
+    echo "Skipping execution of : $1 \"$2\" please remove $SCRIPT_ROOT/.status/$1_$2 if this is incorrect" 1>&2 >> $SCRIPT_ROOT/log/$1_$2.log
   fi
 }
 
