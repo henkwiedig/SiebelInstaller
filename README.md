@@ -14,7 +14,7 @@ These scripts will download, install, configure a complete Siebel Installation.
 **Requierments**
 
 * 4 GB Memory, 1 CPU (more is always better)
-* 32 GB Diskspace for installation media, 40 GB installed software (siebel running)
+* 32 GB Diskspace for installation media, 25 GB installed software (minimal siebel running)
 * Internet connection
 * MOS Login
 
