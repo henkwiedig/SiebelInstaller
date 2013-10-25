@@ -21,7 +21,7 @@ These scripts will download, install, configure a complete Siebel Installation.
 **Installation**
 
 * Install RHEL or CentOs 6.4 (i use a minimal netinstall. see bootstrap/links.txt)
-* Login to your as root
+* Login to your box as root (i use a VirtualBox machine)
 * curl https://raw.github.com/henkwiedig/SiebelInstaller/master/bootstrap/bootstap.sh | sh
 * cd /opt ; git clone https://github.com/henkwiedig/SiebelInstaller.git
 * cd SiebelInstaller
