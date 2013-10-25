@@ -275,4 +275,9 @@ install_siebel_webserver_extention () {
   echo "" | su -l siebel -c "$SCRIPT_ROOT/unpack/siebel_install_image_$SIEBEL_VERSION/$SIEBEL_VERSION/Linux/Server/Siebel_Web_Server_Extension/Disk1/install/runInstaller -silent -waitforcompletion -responseFile $SCRIPT_ROOT/unpack/siebel_install_image_$SIEBEL_VERSION/$SIEBEL_VERSION/Linux/Server/Siebel_Web_Server_Extension/Disk1/install/install_siebel_webserver_entention_8.1.1.11.rsp"
 }
 
+siebel_apply_swe_profile () {
+  su -l siebel -c "cd /opt/siebel/8.1.1.11.0/eappweb/config; source /opt/siebel/8.1.1.11.0/eappweb/cfgenv.sh ; /opt/siebel/8.1.1.11.0/eappweb/config/config.sh -mode swse -responseFile $SCRIPT_ROOT/templates/siebel_apply_swe_profile_$SIEBEL_VERSION.rsp"
+  
+}
+
 #End of file
