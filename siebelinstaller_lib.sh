@@ -204,7 +204,7 @@ install_siebel_enterprise_server ()
 # Oracle Settings
 TMP=/tmp; export TMP
 TMPDIR=\$TMP; export TMPDIR
-ORACLE_BASE=/opt/siebel/app/oracle; export ORACLE_BASE
+ORACLE_BASE=/opt/siebel/oracle/app/oracle; export ORACLE_BASE
 ORACLE_HOME=\$ORACLE_BASE/product/11.2.0/client_1; export ORACLE_HOME
 ORACLE_SID=orcl; export ORACLE_SID
 PATH=/usr/sbin:\$PATH; export PATH
@@ -225,14 +225,14 @@ install_oracle_client ()
 {
   yum -y install libaio.i686 libaio-devel.i686 compat-libstdc++-33.686 compat-libstdc++-33.i686 glibc-devel.i686 libstdc++-devel.i686
   sed -i -e 's/^CV_ASSUME_DISTID=OEL4*$/CV_ASSUME_DISTID=OEL6/' $SCRIPT_ROOT/unpack/oracle_client_$ORACLE_VERSION/client/stage/cvu/cv/admin/cvu_config
-  mkdir -p /opt/siebel/oracle_client/oraInventory
-cat > /opt/siebel/oracle_client/oraInst.loc <<EOF
-inventory_loc=/opt/siebel/oracle_client/oraInventory
+  mkdir -p /opt/siebel/oracle/oraInventory
+cat > /opt/siebel/oracle/oraInst.loc <<EOF
+inventory_loc=/opt/siebel/oracle/oraInventory
 inst_group=siebel
 EOF
-  chown -R siebel:siebel /opt/siebel/oracle_client/
-  su -l siebel -c "$SCRIPT_ROOT/unpack/oracle_client_$ORACLE_VERSION/client/runInstaller -invPtrLoc /opt/siebel/oracle_cleint/oraInst.loc -silent -waitforcompletion -responseFile $SCRIPT_ROOT/templates/oracle_client_runInstaller_$ORACLE_VERSION.rsp"
-  su -l siebel -c "cat /u01/app/oracle/product/11.2.0/db_1/network/admin/tnsnames.ora > /opt/siebel/app/oracle/product/11.2.0/client_1/network/admin/tnsnames.ora"
+  chown -R siebel:siebel /opt/siebel/oracle/
+  su -l siebel -c "$SCRIPT_ROOT/unpack/oracle_client_$ORACLE_VERSION/client/runInstaller -invPtrLoc /opt/siebel/oracle/oraInst.loc -silent -waitforcompletion -responseFile $SCRIPT_ROOT/templates/oracle_client_runInstaller_$ORACLE_VERSION.rsp"
+  su -l siebel -c "cat /u01/app/oracle/product/11.2.0/db_1/network/admin/tnsnames.ora > /opt/siebel/oracle/app/oracle/product/11.2.0/client_1/network/admin/tnsnames.ora"
 }
 
 create_siebel_database ()
