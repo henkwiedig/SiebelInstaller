@@ -40,6 +40,7 @@ execute_once download_and_unpack "java_$JAVA_VERSION"
 execute_once unpack_product "oracle_$ORACLE_VERSION"
 execute_once unpack_product "oracle_client_$ORACLE_VERSION"
 execute_once unpack_product "siebel_$SIEBEL_VERSION"
+execute_once unpack_product "ohs_$OHS_VERSION"
 execute_once create_siebel_install_image "siebel_$SIEBEL_VERSION"
 
 #install products
@@ -54,6 +55,7 @@ execute_once configure_siebel_swe_profile "$SIEBEL_VERSION"
 execute_once create_siebel_database "$SIEBEL_VERSION"
 execute_once configure_siebel_server "$SIEBEL_VERSION"
 execute_once import_repository "$SIEBEL_VERSION"
+execute_once install_orcale_ohs "$OHS_VERSION"
 
 echo "Done!"
 #End of file

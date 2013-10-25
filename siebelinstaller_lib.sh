@@ -262,4 +262,8 @@ import_repository () {
   su -l siebel -c "cat $SCRIPT_ROOT/templates/siebel_import_repository_${SIEBEL_VERSION}.ucf > /opt/siebel/8.1.1.11.0/ses/siebsrvr/bin/master_imprep.ucf ; source /opt/siebel/8.1.1.11.0/ses/siebsrvr/siebenv.sh; cd /opt/siebel/8.1.1.11.0/ses/siebsrvr/bin/ ; srvrupgwiz /m master_imprep.ucf"
 }
 
+install_orcale_ohs () {
+  su -l siebel -c "$SCRIPT_ROOT/unpack/ohs_${OHS_VERSION}/Disk1/runInstaller -invPtrLoc /opt/siebel/oracle/oraInst.loc -ignoreSysPrereqs -silent -waitforcompletion -responseFile $SCRIPT_ROOT/templates/oracle_ohs_runInstaller_${OHS_VERSION}.rsp"
+}
+
 #End of file
