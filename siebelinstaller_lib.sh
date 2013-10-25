@@ -241,6 +241,7 @@ create_siebel_database ()
   su -l oracle -c "sqlplus / as sysdba @$SCRIPT_ROOT/sql/create_tablespace_sindex.sql"
   su -l oracle -c "sqlplus / as sysdba @$SCRIPT_ROOT/sql/grantusr.sql"
   su -l siebel -c "cat $SCRIPT_ROOT/templates/siebel_${SIEBEL_VERSION}_master_install.ucf > /opt/siebel/8.1.1.11.0/ses/siebsrvr/bin/master_install.ucf; source /opt/siebel/8.1.1.11.0/ses/siebsrvr/cfgenv.sh; source /opt/siebel/8.1.1.11.0/ses/gtwysrvr/siebenv.sh; cd /opt/siebel/8.1.1.11.0/ses/siebsrvr/bin/ ; srvrupgwiz /m master_install.ucf"
+  su -l oracle -c "sqlplus / as sysdba @$SCRIPT_ROOT/sql/lic_codes.sql"
 
 }
 
