@@ -272,7 +272,7 @@ run_srvrmgr () {
 
 install_siebel_webserver_extention () {
   cp $SCRIPT_ROOT/templates/install_siebel_webserver_entention_8.1.1.11.rsp $SCRIPT_ROOT/unpack/siebel_install_image_$SIEBEL_VERSION/$SIEBEL_VERSION/Linux/Server/Siebel_Web_Server_Extension/Disk1/install/
-  su -l siebel -c "$SCRIPT_ROOT/unpack/siebel_install_image_$SIEBEL_VERSION/$SIEBEL_VERSION/Linux/Server/Siebel_Web_Server_Extension/Disk1/install/runInstaller -silent -waitforcompletion -responseFile $SCRIPT_ROOT/unpack/siebel_install_image_$SIEBEL_VERSION/$SIEBEL_VERSION/Linux/Server/Siebel_Web_Server_Extension/Disk1/install/install_siebel_webserver_entention_8.1.1.11.rsp"
+  echo "" | su -l siebel -c "$SCRIPT_ROOT/unpack/siebel_install_image_$SIEBEL_VERSION/$SIEBEL_VERSION/Linux/Server/Siebel_Web_Server_Extension/Disk1/install/runInstaller -silent -waitforcompletion -responseFile $SCRIPT_ROOT/unpack/siebel_install_image_$SIEBEL_VERSION/$SIEBEL_VERSION/Linux/Server/Siebel_Web_Server_Extension/Disk1/install/install_siebel_webserver_entention_8.1.1.11.rsp"
 }
 
 #End of file
