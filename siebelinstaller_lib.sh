@@ -266,4 +266,8 @@ install_orcale_ohs () {
   su -l siebel -c "$SCRIPT_ROOT/unpack/ohs_${OHS_VERSION}/Disk1/runInstaller -invPtrLoc /opt/siebel/oracle/oraInst.loc -ignoreSysPrereqs -silent -waitforcompletion -responseFile $SCRIPT_ROOT/templates/oracle_ohs_runInstaller_${OHS_VERSION}.rsp"
 }
 
+run_srvrmgr () {
+  su -l siebel -c "source /opt/siebel/8.1.1.11.0/ses/siebsrvr/siebenv.sh; srvrmgr -g localhost -e Siebel -u sadmin -p $SADMIN_PASSWORD -i $SCRIPT_ROOT/srvrmgr/$1 -o /opt/siebel/8.1.1.11.0/ses/siebsrvr/log/run_srvrmgr_$1.log"
+}
+
 #End of file

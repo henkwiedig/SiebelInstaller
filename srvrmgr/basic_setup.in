@@ -1,0 +1,2 @@
+assign comp group Communications to server Server1
+enable compgrp Communications for server Server1
