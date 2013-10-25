@@ -263,7 +263,13 @@ import_repository () {
 }
 
 install_orcale_ohs () {
-  su -l siebel -c "$SCRIPT_ROOT/unpack/ohs_${OHS_VERSION}/Disk1/runInstaller -invPtrLoc /opt/siebel/oracle/oraInst.loc -ignoreSysPrereqs -silent -waitforcompletion -responseFile $SCRIPT_ROOT/templates/oracle_ohs_runInstaller_${OHS_VERSION}.rsp"
+  mv /usr/bin/gcc /usr/bin/gcc.orig
+  cp $SCRIPT_ROOT/templates/gcc_fix_for_ohsx64_on_i686 /usr/bin/gcc41
+  ln -s -f /usr/bin/gcc41 /usr/bin/gcc
+  su -l siebel -c "linux32 bash <<EOF
+$SCRIPT_ROOT/unpack/ohs_${OHS_VERSION}/Disk1/install/linux/runInstaller -invPtrLoc /opt/siebel/oracle/oraInst.loc -ignoreSysPrereqs -silent -waitforcompletion -responseFile $SCRIPT_ROOT/templates/oracle_ohs_runInstaller_${OHS_VERSION}.rsp
+EOF
+"
 }
 
 run_srvrmgr () {
@@ -277,7 +283,19 @@ install_siebel_webserver_extention () {
 
 siebel_apply_swe_profile () {
   su -l siebel -c "cd /opt/siebel/8.1.1.11.0/eappweb/config; source /opt/siebel/8.1.1.11.0/eappweb/cfgenv.sh ; /opt/siebel/8.1.1.11.0/eappweb/config/config.sh -mode swse -responseFile $SCRIPT_ROOT/templates/siebel_apply_swe_profile_$SIEBEL_VERSION.rsp"
-  
+}
+
+ohs_reconfigure () {
+  sed -i -e 's,LoadModule swe_module modules/libmod_swe.so,LoadModule swe_module ${ORACLE_HOME}/ohs/modules/libmod_swe.so,' /opt/siebel/oracle/Middleware/Oracle_WT1/ohs/conf/httpd.conf
+  chown root /opt/siebel/oracle/Middleware/Oracle_WT1/ohs/bin/.apachectl
+  chmod 6750 /opt/siebel/oracle/Middleware/Oracle_WT1/ohs/bin/.apachectl
+  sed -i -e 's,#set ulimit for OHS to dump core when it crashes,LD_LIBRARY_PATH=/opt/siebel/8.1.1.11.0/eappweb/bin/:/opt/siebel/8.1.1.11.0/eappweb/bin/enu ; export LD_LIBRARY_PATH\n#set ulimit for OHS to dump core when it crashes,' /opt/siebel/oracle/Middleware/Oracle_WT1/ohs/bin/apachectl
+  su -l siebel -c "export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/opt/siebel/8.1.1.11.0/eappweb/bin; \
+  export ORACLE_HOME=/opt/siebel/oracle/Middleware/Oracle_WT1 ; \
+  export ORACLE_INSTANCE=/opt/siebel/oracle/Middleware/Oracle_WT1/instances/instance1 ; \
+  /opt/siebel/oracle/Middleware/Oracle_WT1/opmn/bin/opmnctl deleteinstance ; \
+  /opt/siebel/oracle/Middleware/Oracle_WT1/opmn/bin/opmnctl createinstance -adminRegistration OFF ;\
+  /opt/siebel/oracle/Middleware/Oracle_WT1/opmn/bin/opmnctl createcomponent -componentType OHS -componentName ohs1"
 }
 
 #End of file

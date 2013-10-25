@@ -1,0 +1,2 @@
+#!/bin/sh
+exec /usr/bin/gcc.orig  -m32 -static-libgcc -B /usr/lib/gcc/i686-redhat-linux/4.4.7 $*
