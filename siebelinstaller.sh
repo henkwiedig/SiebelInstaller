@@ -60,6 +60,7 @@ execute_once install_orcale_ohs "$OHS_VERSION"
 execute_once run_srvrmgr "basic_setup.in"
 execute_once siebel_apply_swe_profile "$SIEBEL_VERSION"
 execute_once ohs_reconfigure "$SIEBEL_VERSION"
+execute_once finish "installation"
 
 echo "Done!"
 #End of file

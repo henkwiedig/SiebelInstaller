@@ -299,4 +299,11 @@ ohs_reconfigure () {
   /opt/siebel/oracle/Middleware/Oracle_WT1/opmn/bin/opmnctl createcomponent -componentType OHS -componentName ohs1"
 }
 
+finish () {
+  cp templates/siebel_services /etc/init.d/
+  chkconfig --add siebel_services 
+  /etc/init.d/siebel_services stop
+  /etc/init.d/siebel_services start
+}
+
 #End of file
