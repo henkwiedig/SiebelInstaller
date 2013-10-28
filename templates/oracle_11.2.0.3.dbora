@@ -1,5 +1,5 @@
 #!/bin/sh
-# chkconfig: 345 99 10
+# chkconfig: 345 98 11
 # description: Oracle auto start-stop script.
 #
 # Set ORA_HOME to be equivalent to the $ORACLE_HOME

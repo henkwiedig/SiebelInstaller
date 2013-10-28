@@ -2,15 +2,6 @@
 # chkconfig: 345 99 10
 # description: start siebel services
 #
-### BEGIN INIT INFO
-# Provides: siebel_services
-# Required-Start: dbora
-# Required-Stop:
-# Default-Start: 3 4 5
-# Default-Stop: 0 1 6
-# Short-Description: start and stop siebel_services
-# Description: Start, stop siebel_services
-### END INIT INFO
 
 
 case "$1" in
