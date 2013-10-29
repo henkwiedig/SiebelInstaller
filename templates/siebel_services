@@ -15,7 +15,7 @@ case "$1" in
                          export ORACLE_HOME=/opt/siebel/oracle/Middleware/Oracle_WT1 ; \
                          export ORACLE_INSTANCE=/opt/siebel/oracle/Middleware/Oracle_WT1/instances/instance1 ; \
                          /opt/siebel/oracle/Middleware/Oracle_WT1/opmn/bin/opmnctl startall"
-        touch /var/lock/subsys/siebel_service
+        touch /var/lock/subsys/siebel_services
         ;;
     'stop')
         echo "Stop Siebel Webserver"
@@ -27,6 +27,6 @@ case "$1" in
         su -l siebel -c "source /opt/siebel/8.1.1.11.0/ses/siebsrvr/siebenv.sh ; stop_server all; mwadm stop"
         echo "Stop Siebel Gateway"
         su -l siebel -c "source /opt/siebel/8.1.1.11.0/ses/gtwysrvr/siebenv.sh ; stop_ns"
-        rm -f /var/lock/subsys/siebel_service
+        rm -f /var/lock/subsys/siebel_services
         ;;
 esac
