@@ -11,7 +11,7 @@ then
 fi
 
 VBoxManage createvm --ostype Linux26_64 --name Siebel --register
-VBoxManage modifyvm Siebel --memory 4096 --nic1 nat --audio none --boot1 dvd
+VBoxManage modifyvm Siebel --memory 4096 --nic1 bridged --bridgeadapter1 eth0 --audio none --boot1 dvd
 VBoxManage showvminfo --machinereadable Siebel > /tmp/vboxinfo.siebel
 source /tmp/vboxinfo.siebel 2> /dev/null
 rm /tmp/vboxinfo.siebel
@@ -22,4 +22,7 @@ VBoxManage storageattach Siebel --storagectl "SATA Controller" --port 0 --device
 VBoxManage storageattach Siebel --storagectl "SATA Controller" --port 1 --device 0 --type dvddrive --medium $SCRIPT_ROOT/downloads/CentOS-6.4-x86_64-netinstall.iso
 VBoxManage storagectl Siebel --name "Floppy Controller" --add floppy
 VBoxManage storageattach Siebel --storagectl "Floppy Controller" --port 0 --device 0 --type fdd --medium $SCRIPT_ROOT/../templates/kickstarter_disk_image.img
+VBoxSDL --startvm Siebel
+VBoxManage storageattach Siebel --storagectl "SATA Controller" --port 1 --device 0 --type dvddrive --medium none
+VBoxManage storagectl Siebel --name "Floppy Controller" --remove
 VBoxManage startvm Siebel
