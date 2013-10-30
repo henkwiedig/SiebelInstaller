@@ -11,16 +11,18 @@ These scripts will download, install, configure a complete Siebel Installation.
 * Oracle Webserver 11.1.1.7
 * Siebel Webserver Extention 8.1.1.11
 
-**Requierments**
+**Requirements**
 
 * 4 GB Memory, 1 CPU (more is always better)
-* 32 GB Diskspace for installation media, 25 GB installed software (minimal siebel running)
+* 35 GB Diskspace for installation media, 25 GB installed software (minimal siebel running)
 * Internet connection
 * MOS Login
 
 **Installation**
 
-* Install RHEL or CentOs 6.4 (i use a minimal netinstall. see bootstrap/links.txt)
+* Install CentOs 6.4 (see bootstrap/links.txt or use bootstrap/create_vm.sh, RHEL should work too)
+..* Manual installation : Please obey requirements, minimal installation is sufficient
+..* in case of ./bootstrap/create_vm.sh : VBox automatically boots, press [TAB] at boot promt and append "ks=hd:fd0:/ks.cfg autostep" to cmdline
 * Login to your box as root (i use a VirtualBox machine)
 * curl https://raw.github.com/henkwiedig/SiebelInstaller/master/bootstrap/bootstap.sh | sh
 * cd /opt ; git clone https://github.com/henkwiedig/SiebelInstaller.git
