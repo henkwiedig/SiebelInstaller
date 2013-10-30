@@ -31,7 +31,7 @@ These scripts will download, install, configure a complete Siebel Installation.
 * cd SiebelInstaller
 * ./siebelinstaller.sh
 * wait to complete
-* Login to http://ip-of-your-vm/ecommunication_enu/start.swe
+* Login to http://ip-of-your-vm:7777/ecommunication_enu/start.swe
 
 **TODO**
 
