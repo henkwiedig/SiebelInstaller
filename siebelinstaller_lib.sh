@@ -181,6 +181,7 @@ create_siebel_install_image ()
 {
   if [ ! -e $SCRIPT_ROOT/unpack/siebel_install_image_$SIEBEL_VERSION ]
   then 
+    source /etc/profile
     cp $SCRIPT_ROOT/templates/siebel_snic_${SIEBEL_VERSION}.rsp $SCRIPT_ROOT/unpack/siebel_$SIEBEL_VERSION
     sed -i -e "s,CHANGE_ME,$SCRIPT_ROOT/unpack/siebel_install_image_$SIEBEL_VERSION," $SCRIPT_ROOT/unpack/siebel_$SIEBEL_VERSION/siebel_snic_${SIEBEL_VERSION}.rsp
     OLD_LANG=$LANG

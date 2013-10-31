@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/bash -e
 
 FULL_PATH=`readlink -f $0 ` 
 SCRIPT_ROOT=`dirname $FULL_PATH`
