@@ -186,7 +186,7 @@ create_siebel_install_image ()
     sed -i -e "s,CHANGE_ME,$SCRIPT_ROOT/unpack/siebel_install_image_$SIEBEL_VERSION," $SCRIPT_ROOT/unpack/siebel_$SIEBEL_VERSION/siebel_snic_${SIEBEL_VERSION}.rsp
     OLD_LANG=$LANG
     export LANG=C
-    $SCRIPT_ROOT/unpack/siebel_$SIEBEL_VERSION/snic.sh -silent -responseFile $SCRIPT_ROOT/unpack/siebel_$SIEBEL_VERSION/siebel_snic_${SIEBEL_VERSION}.rsp > $SCRIPT_ROOT/log/create_siebel_install_image_${SIEBEL_VERSION}.log
+    echo "" | $SCRIPT_ROOT/unpack/siebel_$SIEBEL_VERSION/snic.sh -silent -responseFile $SCRIPT_ROOT/unpack/siebel_$SIEBEL_VERSION/siebel_snic_${SIEBEL_VERSION}.rsp > $SCRIPT_ROOT/log/create_siebel_install_image_${SIEBEL_VERSION}.log
     export LANG=$OLD_LANG
   else
     echo "Siebel Install Image $SCRIPT_ROOT/unpack/siebel_install_image_$SIEBEL_VERSION exists. Skipping ..."
