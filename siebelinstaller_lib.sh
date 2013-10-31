@@ -179,6 +179,7 @@ EOF
   cp templates/oracle_$ORACLE_VERSION.dbora /etc/init.d/dbora
   chkconfig --add dbora
   sed -i -e 's/^orcl:\/u01\/app\/oracle\/product\/11.2.0\/db_1:N/orcl:\/u01\/app\/oracle\/product\/11.2.0\/db_1:Y/' /etc/oratab
+  touch /var/lock/subsys/dbora
 
 }
 
