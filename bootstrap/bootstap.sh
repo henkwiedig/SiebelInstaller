@@ -2,3 +2,4 @@
 
 yum -y update
 yum -y install git wget
+reboot
