@@ -82,6 +82,9 @@ download_and_unpack ()
       echo "File $OUTPUT_DIR/$file_name already exists. Skipping ..."
     else
       $WGET $file_url -O $OUTPUT_DIR/$file_name >> $LOGFILE 2>&1
+    fi
+    if [ ! -e $file_dest_path ]
+    then
       case $file_name in
         *.tar.gz)
           tar zxf $OUTPUT_DIR/$file_name -C $file_dest_path
@@ -90,6 +93,8 @@ download_and_unpack ()
           echo "File extention unknown"
           ;;
       esac
+    else 
+      echo "File $file_dest_path already exists. Skipping ..."
     fi
   done
 }
