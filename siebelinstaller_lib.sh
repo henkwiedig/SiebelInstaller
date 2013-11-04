@@ -272,13 +272,17 @@ import_repository () {
 }
 
 install_orcale_ohs () {
-  mv /usr/bin/gcc /usr/bin/gcc.orig
-  cp $SCRIPT_ROOT/templates/gcc_fix_for_ohsx64_on_i686 /usr/bin/gcc41
+  if [ ! -e /usr/bin/gcc.orig ] 
+  then 
+    mv /usr/bin/gcc /usr/bin/gcc.orig
+    cp $SCRIPT_ROOT/templates/gcc_fix_for_ohsx64_on_i686 /usr/bin/gcc41
+  fi
   ln -s -f /usr/bin/gcc41 /usr/bin/gcc
   su -l siebel -c "linux32 bash <<EOF
 $SCRIPT_ROOT/unpack/ohs_${OHS_VERSION}/Disk1/install/linux/runInstaller -invPtrLoc /opt/siebel/oracle/oraInst.loc -ignoreSysPrereqs -silent -waitforcompletion -responseFile $SCRIPT_ROOT/templates/oracle_ohs_runInstaller_${OHS_VERSION}.rsp
 EOF
 "
+  ln -sf /usr/bin/gcc.orig /usr/bin/gcc
 }
 
 run_srvrmgr () {
