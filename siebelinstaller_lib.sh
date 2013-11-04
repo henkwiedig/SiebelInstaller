@@ -180,17 +180,17 @@ EOF
 
 create_siebel_install_image ()
 {
-  if [ ! -e $SCRIPT_ROOT/unpack/siebel_install_image_$SIEBEL_VERSION ]
+  if [ ! -e $SCRIPT_ROOT/unpack/siebel_install_image_$1 ]
   then 
     source /etc/profile
-    cp $SCRIPT_ROOT/templates/siebel_snic_${SIEBEL_VERSION}.rsp $SCRIPT_ROOT/unpack/siebel_$SIEBEL_VERSION
-    sed -i -e "s,CHANGE_ME,$SCRIPT_ROOT/unpack/siebel_install_image_$SIEBEL_VERSION," $SCRIPT_ROOT/unpack/siebel_$SIEBEL_VERSION/siebel_snic_${SIEBEL_VERSION}.rsp
+    cp $SCRIPT_ROOT/templates/snic_${1}.rsp $SCRIPT_ROOT/unpack/$1/
+    sed -i -e "s,CHANGE_ME,$SCRIPT_ROOT/unpack/siebel_install_image_$1," $SCRIPT_ROOT/unpack/$1/snic_${1}.rsp
     OLD_LANG=$LANG
     export LANG=C
-    echo "" | $SCRIPT_ROOT/unpack/siebel_$SIEBEL_VERSION/snic.sh -silent -responseFile $SCRIPT_ROOT/unpack/siebel_$SIEBEL_VERSION/siebel_snic_${SIEBEL_VERSION}.rsp > $SCRIPT_ROOT/log/create_siebel_install_image_${SIEBEL_VERSION}.log
+    echo "" | $SCRIPT_ROOT/unpack/$1/snic.sh -silent -responseFile $SCRIPT_ROOT/unpack/$1/snic_${1}.rsp > $SCRIPT_ROOT/log/create_siebel_install_image_${1}.log
     export LANG=$OLD_LANG
   else
-    echo "Siebel Install Image $SCRIPT_ROOT/unpack/siebel_install_image_$SIEBEL_VERSION exists. Skipping ..."
+    echo "Siebel Install Image $SCRIPT_ROOT/unpack/siebel_install_image_$1 exists. Skipping ..."
   fi
 }
 
@@ -214,9 +214,9 @@ PATH=\$ORACLE_HOME/bin:\$PATH; export PATH
 LD_LIBRARY_PATH=\$ORACLE_HOME/lib:/lib:/usr/lib; export LD_LIBRARY_PATH
 RESOLV_MULTI=off ; export RESOLV_MULTI
 EOF
-  cp $SCRIPT_ROOT/templates/install_siebel_enterprise_server_8.1.1.11.rsp $SCRIPT_ROOT/unpack/siebel_install_image_$SIEBEL_VERSION/$SIEBEL_VERSION/Linux/Server/Siebel_Enterprise_Server/Disk1/install/
-  sed -i -e "s,CHANGE_ME,$SCRIPT_ROOT/unpack/siebel_install_image_$SIEBEL_VERSION/$SIEBEL_VERSION," $SCRIPT_ROOT/unpack/siebel_install_image_$SIEBEL_VERSION/$SIEBEL_VERSION/Linux/Server/Siebel_Enterprise_Server/Disk1/install/install_siebel_enterprise_server_8.1.1.11.rsp
-  echo "" | su -l siebel -c "$SCRIPT_ROOT/unpack/siebel_install_image_$SIEBEL_VERSION/$SIEBEL_VERSION/Linux/Server/Siebel_Enterprise_Server/Disk1/install/runInstaller -silent -waitforcompletion -responseFile $SCRIPT_ROOT/unpack/siebel_install_image_$SIEBEL_VERSION/$SIEBEL_VERSION/Linux/Server/Siebel_Enterprise_Server/Disk1/install/install_siebel_enterprise_server_8.1.1.11.rsp"
+  cp $SCRIPT_ROOT/templates/install_siebel_enterprise_server_8.1.1.11.rsp $SCRIPT_ROOT/unpack/siebel_install_image_siebel_linux_$SIEBEL_VERSION/$SIEBEL_VERSION/Linux/Server/Siebel_Enterprise_Server/Disk1/install/
+  sed -i -e "s,CHANGE_ME,$SCRIPT_ROOT/unpack/siebel_install_image_siebel_linux_$SIEBEL_VERSION/$SIEBEL_VERSION," $SCRIPT_ROOT/unpack/siebel_install_image_siebel_linux_$SIEBEL_VERSION/$SIEBEL_VERSION/Linux/Server/Siebel_Enterprise_Server/Disk1/install/install_siebel_enterprise_server_8.1.1.11.rsp
+  echo "" | su -l siebel -c "$SCRIPT_ROOT/unpack/siebel_install_image_siebel_linux_$SIEBEL_VERSION/$SIEBEL_VERSION/Linux/Server/Siebel_Enterprise_Server/Disk1/install/runInstaller -silent -waitforcompletion -responseFile $SCRIPT_ROOT/unpack/siebel_install_image_siebel_linux_$SIEBEL_VERSION/$SIEBEL_VERSION/Linux/Server/Siebel_Enterprise_Server/Disk1/install/install_siebel_enterprise_server_8.1.1.11.rsp"
 }
 
 configure_siebel_gateway () {
@@ -286,8 +286,8 @@ run_srvrmgr () {
 }
 
 install_siebel_webserver_extention () {
-  cp $SCRIPT_ROOT/templates/install_siebel_webserver_entention_8.1.1.11.rsp $SCRIPT_ROOT/unpack/siebel_install_image_$SIEBEL_VERSION/$SIEBEL_VERSION/Linux/Server/Siebel_Web_Server_Extension/Disk1/install/
-  echo "" | su -l siebel -c "$SCRIPT_ROOT/unpack/siebel_install_image_$SIEBEL_VERSION/$SIEBEL_VERSION/Linux/Server/Siebel_Web_Server_Extension/Disk1/install/runInstaller -silent -waitforcompletion -responseFile $SCRIPT_ROOT/unpack/siebel_install_image_$SIEBEL_VERSION/$SIEBEL_VERSION/Linux/Server/Siebel_Web_Server_Extension/Disk1/install/install_siebel_webserver_entention_8.1.1.11.rsp"
+  cp $SCRIPT_ROOT/templates/install_siebel_webserver_entention_8.1.1.11.rsp $SCRIPT_ROOT/unpack/siebel_install_image_siebel_linux_SIEBEL_VERSION/$SIEBEL_VERSION/Linux/Server/Siebel_Web_Server_Extension/Disk1/install/
+  echo "" | su -l siebel -c "$SCRIPT_ROOT/unpack/siebel_install_image_siebel_linux_$SIEBEL_VERSION/$SIEBEL_VERSION/Linux/Server/Siebel_Web_Server_Extension/Disk1/install/runInstaller -silent -waitforcompletion -responseFile $SCRIPT_ROOT/unpack/siebel_install_image_siebel_linux_$SIEBEL_VERSION/$SIEBEL_VERSION/Linux/Server/Siebel_Web_Server_Extension/Disk1/install/install_siebel_webserver_entention_8.1.1.11.rsp"
 }
 
 siebel_apply_swe_profile () {

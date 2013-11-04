@@ -1,0 +1,5 @@
+imageVersion="8.1.1.11"
+imageDirectory="CHANGE_ME"
+platformList={Windows}
+productList={Siebel_Tools,Siebel_Sample_Database}
+languageList={ENU} 
