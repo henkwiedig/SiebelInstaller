@@ -135,7 +135,7 @@ install_oracle ()
     return 0
   fi
   cat $SCRIPT_ROOT/templates/oracle_sysctl_$ORACLE_VERSION.conf >> /etc/sysctl.conf
-  /sbin/sysctl -p
+  /sbin/sysctl -p 2>&1
   cat $SCRIPT_ROOT/templates/oracle_limits_$ORACLE_VERSION.conf >> /etc/security/limits.conf
   yum -y install binutils compat-libstdc++-33 compat-libstdc++-33 elfutils-libelf gcc gcc-c++ glibc glibc-common glibc-devel glibc-headers ksh libaio libaio-devel libgomp libgcc libstdc++ libstdc++-devel make sysstat unixODBC unixODBC-devel numactl-devel xorg-x11-utils xauth elfutils-libelf-devel pdksh compat-libcap1
   groupadd oinstall
