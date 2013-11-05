@@ -32,7 +32,8 @@ A One-Click Siebel-Admin solution.
 * cd SiebelInstaller
 * ./siebelinstaller.sh
 * wait to complete
-* Login to http://ip-of-your-vm:7777/ecommunication_enu/start.swe
+* Login to Siebel: http://ip-of-your-vm:7777/ecommunication_enu/start.swe
+* Login to Oracle EM: https://ip-of-your-vm:1158/em
 
 **TODO**
 
