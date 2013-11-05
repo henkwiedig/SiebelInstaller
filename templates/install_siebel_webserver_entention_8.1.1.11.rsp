@@ -1,6 +1,6 @@
 RESPONSEFILE_VERSION=2.2.1.0.0
-s_shiphomeLocation="/opt/SiebelInstaller/unpack/siebel_install_image_8.1.1.11/8.1.1.11/Linux/Server/Siebel_Web_Server_Extension/Disk1"
-FROM_LOCATION="/opt/SiebelInstaller/unpack/siebel_install_image_8.1.1.11/8.1.1.11/Linux/Server/Siebel_Web_Server_Extension/Disk1/stage/products.xml"
+s_shiphomeLocation="/opt/SiebelInstaller/unpack/siebel_install_image_siebel_linux_8.1.1.11/8.1.1.11/Linux/Server/Siebel_Web_Server_Extension/Disk1"
+FROM_LOCATION="/opt/SiebelInstaller/unpack/siebel_install_image_siebel_linux_8.1.1.11/8.1.1.11/Linux/Server/Siebel_Web_Server_Extension/Disk1/stage/products.xml"
 s_topLevelComp="oracle.siebel.eappweb"
 s_SiebelVersion="8.1.1.11.0"
 s_installType="New Installation"
