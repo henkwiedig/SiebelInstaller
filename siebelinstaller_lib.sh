@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/bash -e
 
 prepare_host ()
 {
@@ -129,7 +129,7 @@ install_oracle ()
 {
   #see http://www.oracle-base.com/articles/11g/oracle-db-11gr2-installation-on-oracle-linux-5.php
 
-  if [ -e /u01/app/oracle/oradata ]
+  if [ -e $ORACLE_HOME/oradata ]
   then
     echo "Oracle already installed. Skipping...."
     return 0
@@ -146,9 +146,9 @@ install_oracle ()
   sed -i -e 's/^SELINUX=.*$/SELINUX=permissive/' /etc/selinux/config
   service iptables stop
   chkconfig iptables off
-  mkdir -p /u01/app/oracle/product/11.2.0/db_1
-  chown -R oracle:oinstall /u01
-  chmod -R 775 /u01
+  mkdir -p $ORACLE_HOME
+  chown -R oracle:oinstall $ORACLE_BASE
+  chmod -R 775 $ORACLE_BASE
   cat >/home/oracle/.bash_profile <<EOF
 # Oracle Settings
 TMP=/tmp; export TMP
@@ -156,8 +156,8 @@ TMPDIR=\$TMP; export TMPDIR
 
 ORACLE_HOSTNAME=localhost.localdomain; export ORACLE_HOSTNAME
 ORACLE_UNQNAME=orcl; export ORACLE_UNQNAME
-ORACLE_BASE=/u01/app/oracle; export ORACLE_BASE
-ORACLE_HOME=\$ORACLE_BASE/product/11.2.0/db_1; export ORACLE_HOME
+ORACLE_BASE=$ORACLE_BASE; export ORACLE_BASE
+ORACLE_HOME=$ORACLE_HOME; export ORACLE_HOME
 ORACLE_SID=orcl; export ORACLE_SID
 PATH=/usr/sbin:\$PATH; export PATH
 PATH=\$ORACLE_HOME/bin:\$PATH; export PATH
@@ -168,12 +168,15 @@ EOF
   sed -i -e 's/^CV_ASSUME_DISTID=OEL4*$/CV_ASSUME_DISTID=OEL6/' $SCRIPT_ROOT/unpack/oracle_$ORACLE_VERSION/database/stage/cvu/cv/admin/cvu_config
 
   #TODO: fix response file
-  su -l oracle -c "$SCRIPT_ROOT/unpack/oracle_11.2.0.3/database/runInstaller -silent -waitforcompletion -responseFile $SCRIPT_ROOT/templates/oracle_runInstaller_$ORACLE_VERSION.rsp" 
-  /u01/app/oraInventory/orainstRoot.sh
-  /u01/app/oracle/product/11.2.0/db_1/root.sh
-  cp templates/oracle_$ORACLE_VERSION.dbora /etc/init.d/dbora
+  sed "s,CHANGE_ME_ORACLE_BASE,$ORACLE_BASE," $SCRIPT_ROOT/templates/oracle_runInstaller_$ORACLE_VERSION.rsp > /tmp/oracle_runInstaller_$ORACLE_VERSION.rsp
+  sed -i -e "s,CHANGE_ME_ORACLE_HOME,$ORACLE_HOME," /tmp/oracle_runInstaller_$ORACLE_VERSION.rsp 
+  sed -i -e "s,CHANGE_ME_ORACLE_PASSWROD,$ORACLE_PASSWROD," /tmp/oracle_runInstaller_$ORACLE_VERSION.rsp 
+  su -l oracle -c "$SCRIPT_ROOT/unpack/oracle_$ORACLE_VERSION/database/runInstaller -silent -waitforcompletion -responseFile /tmp/oracle_runInstaller_$ORACLE_VERSION.rsp"
+  $ORACLE_BASE/oraInventory/orainstRoot.sh
+  $ORACLE_HOME/root.sh
+  sed "s,CHANGE_ME_ORACLE_HOME,$ORACLE_HOME," templates/oracle_$ORACLE_VERSION.dbora > /etc/init.d/dbora
   chkconfig --add dbora
-  sed -i -e 's/^orcl:\/u01\/app\/oracle\/product\/11.2.0\/db_1:N/orcl:\/u01\/app\/oracle\/product\/11.2.0\/db_1:Y/' /etc/oratab
+  sed -i -e "s,^orcl:$ORACLE_HOME:N,orcl:$ORACLE_HOME:Y," /etc/oratab
   touch /var/lock/subsys/dbora
 
 }
@@ -234,13 +237,13 @@ inst_group=siebel
 EOF
   chown -R siebel:siebel /opt/siebel/oracle/
   su -l siebel -c "$SCRIPT_ROOT/unpack/oracle_client_$ORACLE_VERSION/client/runInstaller -invPtrLoc /opt/siebel/oracle/oraInst.loc -silent -waitforcompletion -responseFile $SCRIPT_ROOT/templates/oracle_client_runInstaller_$ORACLE_VERSION.rsp"
-  su -l siebel -c "cat /u01/app/oracle/product/11.2.0/db_1/network/admin/tnsnames.ora > /opt/siebel/oracle/app/oracle/product/11.2.0/client_1/network/admin/tnsnames.ora"
+  su -l siebel -c "cat $ORACLE_HOME/network/admin/tnsnames.ora > /opt/siebel/oracle/app/oracle/product/11.2.0/client_1/network/admin/tnsnames.ora"
 }
 
 create_siebel_database ()
 {
-  su -l oracle -c "sqlplus / as sysdba @$SCRIPT_ROOT/sql/create_tablespace_sdata.sql"
-  su -l oracle -c "sqlplus / as sysdba @$SCRIPT_ROOT/sql/create_tablespace_sindex.sql"
+  su -l oracle -c "sqlplus / as sysdba @$SCRIPT_ROOT/sql/create_tablespace_sdata.sql" $ORACLE_HOME
+  su -l oracle -c "sqlplus / as sysdba @$SCRIPT_ROOT/sql/create_tablespace_sindex.sql" $ORACLE_HOME
   su -l oracle -c "sqlplus / as sysdba @$SCRIPT_ROOT/sql/grantusr.sql"
   su -l siebel -c "cat $SCRIPT_ROOT/templates/siebel_${SIEBEL_VERSION}_master_install.ucf > /opt/siebel/8.1.1.11.0/ses/siebsrvr/bin/master_install.ucf; source /opt/siebel/8.1.1.11.0/ses/siebsrvr/cfgenv.sh; source /opt/siebel/8.1.1.11.0/ses/gtwysrvr/siebenv.sh; cd /opt/siebel/8.1.1.11.0/ses/siebsrvr/bin/ ; srvrupgwiz /m master_install.ucf"
   yum -y install libxslt.x86_64

@@ -1,7 +1,13 @@
 #!/bin/bash
 
+source $SCRIPT_ROOT/config.defaults
+if [ -e $SCRIPT_ROOT/config.local ]
+then
+  source $SCRIPT_ROOT/config.local
+fi
+
 #remove oracle
-rm -fr /u01/ /etc/oraInst.loc /etc/oratab 
+rm -fr $ORACLE_BASE /etc/oraInst.loc /etc/oratab 
 userdel -f -r oracle
 groupdel oinstall
 groupdel dba 

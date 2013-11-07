@@ -46,7 +46,7 @@ UNIX_GROUP_NAME=oinstall
 # This is an optional parameter if installing on
 # Windows based Operating System.
 #-------------------------------------------------------------------------------
-INVENTORY_LOCATION=/u01/app/oraInventory
+INVENTORY_LOCATION=CHANGE_ME_ORACLE_BASE/oraInventory
 
 #-------------------------------------------------------------------------------
 # Specify the languages in which the components will be installed.             
@@ -88,12 +88,12 @@ SELECTED_LANGUAGES=en
 #-------------------------------------------------------------------------------
 # Specify the complete path of the Oracle Home. 
 #-------------------------------------------------------------------------------
-ORACLE_HOME=/u01/app/oracle/product/11.2.0/db_1
+ORACLE_HOME=CHANGE_ME_ORACLE_HOME
 
 #-------------------------------------------------------------------------------
 # Specify the complete path of the Oracle Base. 
 #-------------------------------------------------------------------------------
-ORACLE_BASE=/u01/app/oracle
+ORACLE_BASE=CHANGE_ME_ORACLE_BASE
 
 #-------------------------------------------------------------------------------
 # Specify the installation edition of the component.                     
@@ -259,7 +259,7 @@ oracle.install.db.config.starterdb.enableSecuritySettings=false
 # This variable holds the password that is to be used for all schemas in the
 # starter database.
 #-------------------------------------------------------------------------------
-oracle.install.db.config.starterdb.password.ALL=oracle
+oracle.install.db.config.starterdb.password.ALL=CHANGE_ME_ORACLE_PASSWROD
 
 #-------------------------------------------------------------------------------
 # Specify the SYS password for the starter database.
@@ -341,7 +341,7 @@ oracle.install.db.config.starterdb.storageType=FILE_SYSTEM_STORAGE
 #
 # Applicable only when oracle.install.db.config.starterdb.storage=FILE_SYSTEM_STORAGE 
 #-------------------------------------------------------------------------------
-oracle.install.db.config.starterdb.fileSystemStorage.dataLocation=/u01/app/oracle/oradata
+oracle.install.db.config.starterdb.fileSystemStorage.dataLocation=CHANGE_ME_ORACLE_HOME/oradata
 
 #-------------------------------------------------------------------------------
 # Specify the backup and recovery location.

@@ -9,7 +9,7 @@
 # Oracle database in ORA_HOME.
 # See: http://www.oracle-base.com/articles/linux/automating-database-startup-and-shutdown-on-linux.php
 
-ORA_HOME=/u01/app/oracle/product/11.2.0/db_1
+ORA_HOME=CHANGE_ME_ORACLE_HOME
 ORA_OWNER=oracle
 export ORACLE_UNQNAME=orcl
 
