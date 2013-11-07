@@ -199,53 +199,62 @@ create_siebel_install_image ()
 
 install_siebel_enterprise_server ()
 {
+  #TODO use own oraInventory
   yum -y install glibc.i686 libXmu.i686 libXtst.i686  libstdc++.x86_64 libstdc++.i686  compat-libstdc++-33.i686 compat-libstdc++-33.x86_64
   groupadd siebel
 
   useradd -g siebel -G siebel,oinstall siebel
-  mkdir -p /opt/siebel
-  chown -R siebel:siebel /opt/siebel
+  mkdir -p $SIEBEL_BASE
+  chown -R siebel:siebel $SIEBEL_BASE
   cat >/home/siebel/.bash_profile <<EOF
 # Oracle Settings
 TMP=/tmp; export TMP
 TMPDIR=\$TMP; export TMPDIR
-ORACLE_BASE=/opt/siebel/oracle/app/oracle; export ORACLE_BASE
-ORACLE_HOME=\$ORACLE_BASE/product/11.2.0/client_1; export ORACLE_HOME
+ORACLE_BASE=$SIEBEL_BASE/oracle_client; export ORACLE_BASE
+ORACLE_HOME=$SIEBEL_BASE/oracle_client/client; export ORACLE_HOME
 ORACLE_SID=orcl; export ORACLE_SID
 PATH=/usr/sbin:\$PATH; export PATH
 PATH=\$ORACLE_HOME/bin:\$PATH; export PATH
 LD_LIBRARY_PATH=\$ORACLE_HOME/lib:/lib:/usr/lib; export LD_LIBRARY_PATH
 RESOLV_MULTI=off ; export RESOLV_MULTI
 EOF
-  cp $SCRIPT_ROOT/templates/install_siebel_enterprise_server_8.1.1.11.rsp $SCRIPT_ROOT/unpack/siebel_install_image_siebel_linux_$SIEBEL_VERSION/$SIEBEL_VERSION/Linux/Server/Siebel_Enterprise_Server/Disk1/install/
-  sed -i -e "s,CHANGE_ME,$SCRIPT_ROOT/unpack/siebel_install_image_siebel_linux_$SIEBEL_VERSION/$SIEBEL_VERSION," $SCRIPT_ROOT/unpack/siebel_install_image_siebel_linux_$SIEBEL_VERSION/$SIEBEL_VERSION/Linux/Server/Siebel_Enterprise_Server/Disk1/install/install_siebel_enterprise_server_8.1.1.11.rsp
-  echo "" | su -l siebel -c "$SCRIPT_ROOT/unpack/siebel_install_image_siebel_linux_$SIEBEL_VERSION/$SIEBEL_VERSION/Linux/Server/Siebel_Enterprise_Server/Disk1/install/runInstaller -silent -waitforcompletion -responseFile $SCRIPT_ROOT/unpack/siebel_install_image_siebel_linux_$SIEBEL_VERSION/$SIEBEL_VERSION/Linux/Server/Siebel_Enterprise_Server/Disk1/install/install_siebel_enterprise_server_8.1.1.11.rsp"
+  cp $SCRIPT_ROOT/templates/install_siebel_enterprise_server_$SIEBEL_VERSION.rsp $SCRIPT_ROOT/unpack/siebel_install_image_siebel_linux_$SIEBEL_VERSION/$SIEBEL_VERSION/Linux/Server/Siebel_Enterprise_Server/Disk1/install/
+  sed -i -e "s,CHANGE_ME_INSTALL_IMAGE,$SCRIPT_ROOT/unpack/siebel_install_image_siebel_linux_$SIEBEL_VERSION/$SIEBEL_VERSION," $SCRIPT_ROOT/unpack/siebel_install_image_siebel_linux_$SIEBEL_VERSION/$SIEBEL_VERSION/Linux/Server/Siebel_Enterprise_Server/Disk1/install/install_siebel_enterprise_server_$SIEBEL_VERSION.rsp
+  sed -i -e "s,CHANGE_ME_SIEBEL_BASE,$SIEBEL_BASE," $SCRIPT_ROOT/unpack/siebel_install_image_siebel_linux_$SIEBEL_VERSION/$SIEBEL_VERSION/Linux/Server/Siebel_Enterprise_Server/Disk1/install/install_siebel_enterprise_server_$SIEBEL_VERSION.rsp
+  echo "" | su -l siebel -c "$SCRIPT_ROOT/unpack/siebel_install_image_siebel_linux_$SIEBEL_VERSION/$SIEBEL_VERSION/Linux/Server/Siebel_Enterprise_Server/Disk1/install/runInstaller -silent -waitforcompletion -responseFile $SCRIPT_ROOT/unpack/siebel_install_image_siebel_linux_$SIEBEL_VERSION/$SIEBEL_VERSION/Linux/Server/Siebel_Enterprise_Server/Disk1/install/install_siebel_enterprise_server_$SIEBEL_VERSION.rsp"
 }
 
 configure_siebel_gateway () {
-  su -l siebel -c "cd /opt/siebel/8.1.1.11.0/ses/config/; source /opt/siebel/8.1.1.11.0/ses/gtwysrvr/cfgenv.sh; /opt/siebel/8.1.1.11.0/ses/config/config.sh -mode enterprise  -responseFile $SCRIPT_ROOT/templates/siebel_configure_gateway_$SIEBEL_VERSION.rsp"
+  cp $SCRIPT_ROOT/templates/siebel_configure_gateway_$SIEBEL_VERSION.rsp /tmp/siebel_configure_gateway_$SIEBEL_VERSION.rsp
+  sed -i -e "s,CHANGE_ME_SIEBEL_BASE,$SIEBEL_BASE," /tmp/siebel_configure_gateway_$SIEBEL_VERSION.rsp
+  su -l siebel -c "cd $SIEBEL_BASE/ses/config/; source $SIEBEL_BASE/ses/gtwysrvr/cfgenv.sh; $SIEBEL_BASE/ses/config/config.sh -mode enterprise  -responseFile /tmp/siebel_configure_gateway_$SIEBEL_VERSION.rsp"
 }
 
 install_oracle_client ()
 {
   yum -y install libaio.i686 libaio-devel.i686 compat-libstdc++-33.686 compat-libstdc++-33.i686 glibc-devel.i686 libstdc++-devel.i686
   sed -i -e 's/^CV_ASSUME_DISTID=OEL4*$/CV_ASSUME_DISTID=OEL6/' $SCRIPT_ROOT/unpack/oracle_client_$ORACLE_VERSION/client/stage/cvu/cv/admin/cvu_config
-  mkdir -p /opt/siebel/oracle/oraInventory
-cat > /opt/siebel/oracle/oraInst.loc <<EOF
-inventory_loc=/opt/siebel/oracle/oraInventory
+  mkdir -p $SIEBEL_BASE/oracle_client/oraInventory
+cat > $SIEBEL_BASE/oracle_client/oraInst.loc <<EOF
+inventory_loc=$SIEBEL_BASE/oracle_client/oraInventory
 inst_group=siebel
 EOF
-  chown -R siebel:siebel /opt/siebel/oracle/
-  su -l siebel -c "$SCRIPT_ROOT/unpack/oracle_client_$ORACLE_VERSION/client/runInstaller -invPtrLoc /opt/siebel/oracle/oraInst.loc -silent -waitforcompletion -responseFile $SCRIPT_ROOT/templates/oracle_client_runInstaller_$ORACLE_VERSION.rsp"
-  su -l siebel -c "cat $ORACLE_HOME/network/admin/tnsnames.ora > /opt/siebel/oracle/app/oracle/product/11.2.0/client_1/network/admin/tnsnames.ora"
+  chown -R siebel:siebel $SIEBEL_BASE/oracle_client
+  cp $SCRIPT_ROOT/templates/oracle_client_runInstaller_$ORACLE_VERSION.rsp $SCRIPT_ROOT/unpack/oracle_client_$ORACLE_VERSION/client/
+  sed -i -e "s,CHANGE_ME_SIEBEL_BASE,$SIEBEL_BASE," $SCRIPT_ROOT/unpack/oracle_client_$ORACLE_VERSION/client/oracle_client_runInstaller_$ORACLE_VERSION.rsp
+  su -l siebel -c "$SCRIPT_ROOT/unpack/oracle_client_$ORACLE_VERSION/client/runInstaller -invPtrLoc $SIEBEL_BASE/oracle_client/oraInst.loc -silent -waitforcompletion -responseFile $SCRIPT_ROOT/unpack/oracle_client_$ORACLE_VERSION/client/oracle_client_runInstaller_$ORACLE_VERSION.rsp"
+  su -l siebel -c "cat $ORACLE_HOME/network/admin/tnsnames.ora > $SIEBEL_BASE/oracle_client/client/network/admin/tnsnames.ora"
 }
 
 create_siebel_database ()
 {
-  su -l oracle -c "sqlplus / as sysdba @$SCRIPT_ROOT/sql/create_tablespace_sdata.sql" $ORACLE_HOME
-  su -l oracle -c "sqlplus / as sysdba @$SCRIPT_ROOT/sql/create_tablespace_sindex.sql" $ORACLE_HOME
+  su -l oracle -c "sqlplus / as sysdba @$SCRIPT_ROOT/sql/create_tablespace_sdata.sql $ORACLE_HOME"
+  su -l oracle -c "sqlplus / as sysdba @$SCRIPT_ROOT/sql/create_tablespace_sindex.sql $ORACLE_HOME"
   su -l oracle -c "sqlplus / as sysdba @$SCRIPT_ROOT/sql/grantusr.sql"
-  su -l siebel -c "cat $SCRIPT_ROOT/templates/siebel_${SIEBEL_VERSION}_master_install.ucf > /opt/siebel/8.1.1.11.0/ses/siebsrvr/bin/master_install.ucf; source /opt/siebel/8.1.1.11.0/ses/siebsrvr/cfgenv.sh; source /opt/siebel/8.1.1.11.0/ses/gtwysrvr/siebenv.sh; cd /opt/siebel/8.1.1.11.0/ses/siebsrvr/bin/ ; srvrupgwiz /m master_install.ucf"
+  cp $SCRIPT_ROOT/templates/siebel_${SIEBEL_VERSION}_master_install.ucf $SIEBEL_BASE/ses/siebsrvr/bin/master_install.ucf
+  sed -i -e "s,CHANGE_ME_SIEBEL_BASE,$SIEBEL_BASE," $SIEBEL_BASE/ses/siebsrvr/bin/master_install.ucf
+  chown siebel:siebel $SIEBEL_BASE/ses/siebsrvr/bin/master_install.ucf
+  su -l siebel -c "source $SIEBEL_BASE/ses/siebsrvr/cfgenv.sh; source $SIEBEL_BASE/ses/gtwysrvr/siebenv.sh; cd $SIEBEL_BASE/ses/siebsrvr/bin/ ; srvrupgwiz /m master_install.ucf"
   yum -y install libxslt.x86_64
   xsltproc $SCRIPT_ROOT/templates/siebel_lic_keys.xslt http://www.oracle.com/ocom/groups/public/@ocom/documents/webcontent/license_code.xml| grep -v Expires | sed 's/;//' | grep -vE "^$" > /tmp/siebel_lic_codes
   number=1
@@ -257,13 +266,17 @@ create_siebel_database ()
 }
 
 configure_siebel_enterprise () {
-  mkdir -p /opt/siebel/8.1.1.11.0/ses/gtwysrvr/fs
-  chown -R siebel:siebel /opt/siebel/8.1.1.11.0/ses/gtwysrvr/fs
-  su -l siebel -c "cd /opt/siebel/8.1.1.11.0/ses/config/; source /opt/siebel/8.1.1.11.0/ses/gtwysrvr/siebenv.sh; /opt/siebel/8.1.1.11.0/ses/config/config.sh -mode enterprise -responseFile $SCRIPT_ROOT/templates/siebel_configure_enterprise_$SIEBEL_VERSION.rsp"
+  mkdir -p $SIEBEL_BASE/siebelfs
+  chown -R siebel:siebel $SIEBEL_BASE/siebelfs
+  cp $SCRIPT_ROOT/templates/siebel_configure_enterprise_$SIEBEL_VERSION.rsp /tmp/siebel_configure_enterprise_$SIEBEL_VERSION.rsp
+  sed -i -e "s,CHANGE_ME_SIEBEL_BASE,$SIEBEL_BASE," /tmp/siebel_configure_enterprise_$SIEBEL_VERSION.rsp
+  su -l siebel -c "cd $SIEBEL_BASE/ses/config/; source $SIEBEL_BASE/ses/gtwysrvr/siebenv.sh; $SIEBEL_BASE/ses/config/config.sh -mode enterprise -responseFile /tmp/siebel_configure_enterprise_$SIEBEL_VERSION.rsp"
 }
 
 configure_siebel_swe_profile () {
-  su -l siebel -c "cd /opt/siebel/8.1.1.11.0/ses/config/; source /opt/siebel/8.1.1.11.0/ses/gtwysrvr/siebenv.sh; /opt/siebel/8.1.1.11.0/ses/config/config.sh -mode enterprise -responseFile $SCRIPT_ROOT/templates/siebel_configure_swe_profile_$SIEBEL_VERSION.rsp"
+  cp $SCRIPT_ROOT/templates/siebel_configure_swe_profile_$SIEBEL_VERSION.rsp /tmp/siebel_configure_swe_profile_$SIEBEL_VERSION.rsp
+  sed -i -e "s,CHANGE_ME_SIEBEL_BASE,$SIEBEL_BASE," /tmp/siebel_configure_swe_profile_$SIEBEL_VERSION.rsp
+  su -l siebel -c "cd $SIEBEL_BASE/ses/config/; source $SIEBEL_BASE/ses/gtwysrvr/siebenv.sh; $SIEBEL_BASE/ses/config/config.sh -mode enterprise -responseFile /tmp/siebel_configure_swe_profile_$SIEBEL_VERSION.rsp"
 }
 
 configure_siebel_server () {
@@ -293,8 +306,11 @@ run_srvrmgr () {
 }
 
 install_siebel_webserver_extention () {
-  cp $SCRIPT_ROOT/templates/install_siebel_webserver_entention_8.1.1.11.rsp $SCRIPT_ROOT/unpack/siebel_install_image_siebel_linux_$SIEBEL_VERSION/$SIEBEL_VERSION/Linux/Server/Siebel_Web_Server_Extension/Disk1/install/
-  echo "" | su -l siebel -c "$SCRIPT_ROOT/unpack/siebel_install_image_siebel_linux_$SIEBEL_VERSION/$SIEBEL_VERSION/Linux/Server/Siebel_Web_Server_Extension/Disk1/install/runInstaller -silent -waitforcompletion -responseFile $SCRIPT_ROOT/unpack/siebel_install_image_siebel_linux_$SIEBEL_VERSION/$SIEBEL_VERSION/Linux/Server/Siebel_Web_Server_Extension/Disk1/install/install_siebel_webserver_entention_8.1.1.11.rsp"
+  #TODO use own oraInventory
+  cp $SCRIPT_ROOT/templates/install_siebel_webserver_entention_$SIEBEL_VERSION.rsp $SCRIPT_ROOT/unpack/siebel_install_image_siebel_linux_$SIEBEL_VERSION/$SIEBEL_VERSION/Linux/Server/Siebel_Web_Server_Extension/Disk1/install/
+  sed -i -e "s,CHANGE_ME_INSTALL_IMAGE,$SCRIPT_ROOT/unpack/siebel_install_image_siebel_linux_$SIEBEL_VERSION/$SIEBEL_VERSION," $SCRIPT_ROOT/unpack/siebel_install_image_siebel_linux_$SIEBEL_VERSION/$SIEBEL_VERSION/Linux/Server/Siebel_Web_Server_Extension/Disk1/install/install_siebel_webserver_entention_$SIEBEL_VERSION.rsp
+  sed -i -e "s,CHANGE_ME_SIEBEL_BASE,$SIEBEL_BASE," $SCRIPT_ROOT/unpack/siebel_install_image_siebel_linux_$SIEBEL_VERSION/$SIEBEL_VERSION/Linux/Server/Siebel_Web_Server_Extension/Disk1/install/install_siebel_webserver_entention_$SIEBEL_VERSION.rsp
+  echo "" | su -l siebel -c "$SCRIPT_ROOT/unpack/siebel_install_image_siebel_linux_$SIEBEL_VERSION/$SIEBEL_VERSION/Linux/Server/Siebel_Web_Server_Extension/Disk1/install/runInstaller -silent -waitforcompletion -responseFile $SCRIPT_ROOT/unpack/siebel_install_image_siebel_linux_$SIEBEL_VERSION/$SIEBEL_VERSION/Linux/Server/Siebel_Web_Server_Extension/Disk1/install/install_siebel_webserver_entention_$SIEBEL_VERSION.rsp"
 }
 
 siebel_apply_swe_profile () {

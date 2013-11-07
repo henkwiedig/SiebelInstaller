@@ -19,9 +19,11 @@ ORACLE_HOME=$ORACLE_BASE/database/$ORACLE_VERSION
 SIEBEL_PASSWORD=siebel
 #Sadmin Password
 SADMIN_PASSWORD=sadmin
-
 #default Siebel version to install
 SIEBEL_VERSION=8.1.1.11
+#Siebel Base Directory
+SIEBEL_BASE=/opt/siebel/$SIEBEL_VERSION
+
 #default Oracle Webserver to intall
 OHS_VERSION=11.1.1.7
 

@@ -50,7 +50,6 @@ execute_once create_siebel_install_image "siebel_windows_$SIEBEL_VERSION"
 
 #install products
 execute_once install_oracle "oracle_$ORACLE_VERSION"
-exit 0
 execute_once install_siebel_enterprise_server "siebel_$SIEBEL_VERSION"
 execute_once install_siebel_webserver_extention "siebel_$SIEBEL_VERSION"
 execute_once install_oracle_client "oracle_client_$ORACLE_VERSION"
@@ -60,6 +59,7 @@ execute_once configure_siebel_gateway "$SIEBEL_VERSION"
 execute_once configure_siebel_enterprise "$SIEBEL_VERSION"
 execute_once configure_siebel_swe_profile "$SIEBEL_VERSION"
 execute_once create_siebel_database "$SIEBEL_VERSION"
+exit 0
 execute_once configure_siebel_server "$SIEBEL_VERSION"
 execute_once import_repository "$SIEBEL_VERSION"
 execute_once install_orcale_ohs "$OHS_VERSION"

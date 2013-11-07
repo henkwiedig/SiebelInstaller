@@ -26,7 +26,7 @@ ORACLE_HOSTNAME=localhost
 UNIX_GROUP_NAME=siebel
 #-------------------------------------------------------------------------------
 # Inventory location.
-INVENTORY_LOCATION=/opt/siebel/oracle/oraInventory
+INVENTORY_LOCATION=CHANGE_ME_SIEBEL_BASE/oracle_client/oraInventory
 #-------------------------------------------------------------------------------
 # Specify the languages in which the components will be installed.             
 #
@@ -64,10 +64,10 @@ INVENTORY_LOCATION=/opt/siebel/oracle/oraInventory
 SELECTED_LANGUAGES=en
 #-------------------------------------------------------------------------------
 # Complete path of the Oracle Home  
-ORACLE_HOME=/opt/siebel/oracle/app/oracle/product/11.2.0/client_1
+ORACLE_HOME=CHANGE_ME_SIEBEL_BASE/oracle_client/client
 #-------------------------------------------------------------------------------
 # Complete path of the Oracle Base. 
-ORACLE_BASE=/opt/siebel/oracle/app/oracle
+ORACLE_BASE=CHANGE_ME_SIEBEL_BASE/oracle_client
 #------------------------------------------------------------------------------
 #Name       : INSTALL_TYPE
 #Datatype   : String

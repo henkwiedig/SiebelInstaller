@@ -14,3 +14,8 @@ groupdel dba
 groupdel oper
 rm -f .status/download_from_mos_oracle_11.2.0.3 .status/install_oracle_oracle_11.2.0.3 .status/unpack_product_oracle_11.2.0.3
 
+#remove siebel
+rm -rf $SIEBEL_BASE
+userdel -f -r siebel
+groupdel siebel
+rm -f .status/*siebel*
