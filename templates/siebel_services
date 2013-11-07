@@ -7,26 +7,26 @@
 case "$1" in
     'start')
         echo "Start Siebel Gateway"
-        su -l siebel -c "source /opt/siebel/8.1.1.11.0/ses/gtwysrvr/siebenv.sh ; start_ns"
+        su -l siebel -c "source CHANGE_ME_SIEBEL_BASE/ses/gtwysrvr/siebenv.sh ; start_ns"
         echo "Start Siebel Server"
-        su -l siebel -c "source /opt/siebel/8.1.1.11.0/ses/siebsrvr/siebenv.sh ; start_server all"
+        su -l siebel -c "source CHANGE_ME_SIEBEL_BASE/ses/siebsrvr/siebenv.sh ; start_server all"
         echo "Start Siebel Webserver"
-        su -l siebel -c "export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/opt/siebel/8.1.1.11.0/eappweb/bin ; \
-                         export ORACLE_HOME=/opt/siebel/oracle/Middleware/Oracle_WT1 ; \
-                         export ORACLE_INSTANCE=/opt/siebel/oracle/Middleware/Oracle_WT1/instances/instance1 ; \
-                         /opt/siebel/oracle/Middleware/Oracle_WT1/opmn/bin/opmnctl startall"
+        su -l siebel -c "export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:CHANGE_ME_SIEBEL_BASE/eappweb/bin ; \
+                         export ORACLE_HOME=CHANGE_ME_SIEBEL_BASE/ohs/Oracle_WT1 ; \
+                         export ORACLE_INSTANCE=CHANGE_ME_SIEBEL_BASE/ohs/Oracle_WT1/instances/instance1 ; \
+                         CHANGE_ME_SIEBEL_BASE/ohs/Oracle_WT1/opmn/bin/opmnctl startall"
         touch /var/lock/subsys/siebel_services
         ;;
     'stop')
         echo "Stop Siebel Webserver"
-        su -l siebel -c "export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/opt/siebel/8.1.1.11.0/eappweb/bin ; \
-                         export ORACLE_HOME=/opt/siebel/oracle/Middleware/Oracle_WT1 ; \
-                         export ORACLE_INSTANCE=/opt/siebel/oracle/Middleware/Oracle_WT1/instances/instance1 ; \
-                         /opt/siebel/oracle/Middleware/Oracle_WT1/opmn/bin/opmnctl stopall"
+        su -l siebel -c "export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:CHANGE_ME_SIEBEL_BASE/eappweb/bin ; \
+                         export ORACLE_HOME=CHANGE_ME_SIEBEL_BASE/ohs/Oracle_WT1 ; \
+                         export ORACLE_INSTANCE=CHANGE_ME_SIEBEL_BASE/ohs/Oracle_WT1/instances/instance1 ; \
+                         CHANGE_ME_SIEBEL_BASE/ohs/Oracle_WT1/opmn/bin/opmnctl stopall"
         echo "Stop Siebel Server"
-        su -l siebel -c "source /opt/siebel/8.1.1.11.0/ses/siebsrvr/siebenv.sh ; stop_server all; mwadm stop"
+        su -l siebel -c "source CHANGE_ME_SIEBEL_BASE/ses/siebsrvr/siebenv.sh ; stop_server all; mwadm stop"
         echo "Stop Siebel Gateway"
-        su -l siebel -c "source /opt/siebel/8.1.1.11.0/ses/gtwysrvr/siebenv.sh ; stop_ns"
+        su -l siebel -c "source CHANGE_ME_SIEBEL_BASE/ses/gtwysrvr/siebenv.sh ; stop_ns"
         rm -f /var/lock/subsys/siebel_services
         ;;
 esac

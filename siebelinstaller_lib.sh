@@ -280,11 +280,16 @@ configure_siebel_swe_profile () {
 }
 
 configure_siebel_server () {
-  su -l siebel -c "cd /opt/siebel/8.1.1.11.0/ses/config/; source /opt/siebel/8.1.1.11.0/ses/siebsrvr/cfgenv.sh; /opt/siebel/8.1.1.11.0/ses/config/config.sh -mode siebsrvr -responseFile $SCRIPT_ROOT/templates/siebel_configure_siebel_server_$SIEBEL_VERSION.rsp"
+  cp $SCRIPT_ROOT/templates/siebel_configure_siebel_server_$SIEBEL_VERSION.rsp /tmp/siebel_configure_siebel_server_$SIEBEL_VERSION.rsp
+  sed -i -e "s,CHANGE_ME_SIEBEL_BASE,$SIEBEL_BASE," /tmp/siebel_configure_siebel_server_$SIEBEL_VERSION.rsp
+  su -l siebel -c "cd $SIEBEL_BASE/ses/config/; source $SIEBEL_BASE/ses/siebsrvr/cfgenv.sh; $SIEBEL_BASE/ses/config/config.sh -mode siebsrvr -responseFile /tmp/siebel_configure_siebel_server_$SIEBEL_VERSION.rsp"
 }
 
 import_repository () {
-  su -l siebel -c "cat $SCRIPT_ROOT/templates/siebel_import_repository_${SIEBEL_VERSION}.ucf > /opt/siebel/8.1.1.11.0/ses/siebsrvr/bin/master_imprep.ucf ; source /opt/siebel/8.1.1.11.0/ses/siebsrvr/siebenv.sh; cd /opt/siebel/8.1.1.11.0/ses/siebsrvr/bin/ ; srvrupgwiz /m master_imprep.ucf"
+  cp $SCRIPT_ROOT/templates/siebel_import_repository_${SIEBEL_VERSION}.ucf $SIEBEL_BASE/ses/siebsrvr/bin/master_imprep.ucf
+  chown siebel:siebel $SIEBEL_BASE/ses/siebsrvr/bin/master_imprep.ucf
+  sed -i -e "s,CHANGE_ME_SIEBEL_BASE,$SIEBEL_BASE," $SIEBEL_BASE/ses/siebsrvr/bin/master_imprep.ucf
+  su -l siebel -c "source $SIEBEL_BASE/ses/siebsrvr/siebenv.sh; cd $SIEBEL_BASE/ses/siebsrvr/bin/ ; srvrupgwiz /m master_imprep.ucf"
 }
 
 install_orcale_ohs () {
@@ -294,15 +299,23 @@ install_orcale_ohs () {
     cp $SCRIPT_ROOT/templates/gcc_fix_for_ohsx64_on_i686 /usr/bin/gcc41
   fi
   ln -s -f /usr/bin/gcc41 /usr/bin/gcc
+  cp $SCRIPT_ROOT/templates/oracle_ohs_runInstaller_${OHS_VERSION}.rsp /tmp/oracle_ohs_runInstaller_${OHS_VERSION}.rsp
+  sed -i -e "s,CHANGE_ME_SIEBEL_BASE,$SIEBEL_BASE," /tmp/oracle_ohs_runInstaller_${OHS_VERSION}.rsp
+  mkdir -p $SIEBEL_BASE/ohs/oraInventory
+cat > $SIEBEL_BASE/ohs/oraInst.loc <<EOF
+inventory_loc=$SIEBEL_BASE/ohs
+inst_group=siebel
+EOF
+  chown -R siebel:siebel $SIEBEL_BASE/ohs
   su -l siebel -c "linux32 bash <<EOF
-$SCRIPT_ROOT/unpack/ohs_${OHS_VERSION}/Disk1/install/linux/runInstaller -invPtrLoc /opt/siebel/oracle/oraInst.loc -ignoreSysPrereqs -silent -waitforcompletion -responseFile $SCRIPT_ROOT/templates/oracle_ohs_runInstaller_${OHS_VERSION}.rsp
+$SCRIPT_ROOT/unpack/ohs_${OHS_VERSION}/Disk1/install/linux/runInstaller -invPtrLoc $SIEBEL_BASE/ohs/oraInst.loc -ignoreSysPrereqs -silent -waitforcompletion -responseFile /tmp/oracle_ohs_runInstaller_${OHS_VERSION}.rsp
 EOF
 "
   ln -sf /usr/bin/gcc.orig /usr/bin/gcc
 }
 
 run_srvrmgr () {
-  su -l siebel -c "source /opt/siebel/8.1.1.11.0/ses/siebsrvr/siebenv.sh; srvrmgr -g localhost -e Siebel -u sadmin -p $SADMIN_PASSWORD -i $SCRIPT_ROOT/srvrmgr/$1 -o /opt/siebel/8.1.1.11.0/ses/siebsrvr/log/run_srvrmgr_$1.log"
+  su -l siebel -c "source $SIEBEL_BASE/ses/siebsrvr/siebenv.sh; srvrmgr -g localhost -e Siebel -u sadmin -p $SADMIN_PASSWORD -i $SCRIPT_ROOT/srvrmgr/$1 -o $SIEBEL_BASE/ses/siebsrvr/log/run_srvrmgr_$1.log"
 }
 
 install_siebel_webserver_extention () {
@@ -314,24 +327,27 @@ install_siebel_webserver_extention () {
 }
 
 siebel_apply_swe_profile () {
-  su -l siebel -c "cd /opt/siebel/8.1.1.11.0/eappweb/config; source /opt/siebel/8.1.1.11.0/eappweb/cfgenv.sh ; /opt/siebel/8.1.1.11.0/eappweb/config/config.sh -mode swse -responseFile $SCRIPT_ROOT/templates/siebel_apply_swe_profile_$SIEBEL_VERSION.rsp"
+  cp $SCRIPT_ROOT/templates/siebel_apply_swe_profile_$SIEBEL_VERSION.rsp /tmp/siebel_apply_swe_profile_$SIEBEL_VERSION.rsp
+  sed -i -e "s,CHANGE_ME_SIEBEL_BASE,$SIEBEL_BASE," /tmp/siebel_apply_swe_profile_$SIEBEL_VERSION.rsp
+  su -l siebel -c "cd $SIEBEL_BASE/eappweb/config; source $SIEBEL_BASE/eappweb/cfgenv.sh ; $SIEBEL_BASE/eappweb/config/config.sh -mode swse -responseFile /tmp/siebel_apply_swe_profile_$SIEBEL_VERSION.rsp"
 }
 
 ohs_reconfigure () {
-  sed -i -e 's,LoadModule swe_module modules/libmod_swe.so,LoadModule swe_module ${ORACLE_HOME}/ohs/modules/libmod_swe.so,' /opt/siebel/oracle/Middleware/Oracle_WT1/ohs/conf/httpd.conf
-  chown root /opt/siebel/oracle/Middleware/Oracle_WT1/ohs/bin/.apachectl
-  chmod 6750 /opt/siebel/oracle/Middleware/Oracle_WT1/ohs/bin/.apachectl
-  sed -i -e 's,#set ulimit for OHS to dump core when it crashes,LD_LIBRARY_PATH=/opt/siebel/8.1.1.11.0/eappweb/bin/:/opt/siebel/8.1.1.11.0/eappweb/bin/enu ; export LD_LIBRARY_PATH\nRESOLV_MULTI=off ; export RESOLV_MULTI\n#set ulimit for OHS to dump core when it crashes,' /opt/siebel/oracle/Middleware/Oracle_WT1/ohs/bin/apachectl
-  su -l siebel -c "export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/opt/siebel/8.1.1.11.0/eappweb/bin; \
-  export ORACLE_HOME=/opt/siebel/oracle/Middleware/Oracle_WT1 ; \
-  export ORACLE_INSTANCE=/opt/siebel/oracle/Middleware/Oracle_WT1/instances/instance1 ; \
-  /opt/siebel/oracle/Middleware/Oracle_WT1/opmn/bin/opmnctl deleteinstance ; \
-  /opt/siebel/oracle/Middleware/Oracle_WT1/opmn/bin/opmnctl createinstance -adminRegistration OFF ;\
-  /opt/siebel/oracle/Middleware/Oracle_WT1/opmn/bin/opmnctl createcomponent -componentType OHS -componentName ohs1"
+  sed -i -e 's,LoadModule swe_module modules/libmod_swe.so,LoadModule swe_module ${ORACLE_HOME}/ohs/modules/libmod_swe.so,' $SIEBEL_BASE/ohs/Oracle_WT1/ohs/conf/httpd.conf
+  chown root $SIEBEL_BASE/ohs/Oracle_WT1/ohs/bin/.apachectl
+  chmod 6750 $SIEBEL_BASE/ohs/Oracle_WT1/ohs/bin/.apachectl
+  sed -i -e "s,#set ulimit for OHS to dump core when it crashes,LD_LIBRARY_PATH=$SIEBEL_BASE/eappweb/bin/:$SIEBEL_BASE/eappweb/bin/enu ; export LD_LIBRARY_PATH\nRESOLV_MULTI=off ; export RESOLV_MULTI\n#set ulimit for OHS to dump core when it crashes," $SIEBEL_BASE/ohs/Oracle_WT1/ohs/bin/apachectl
+  su -l siebel -c "export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$SIEBEL_BASE/eappweb/bin; \
+  export ORACLE_HOME=$SIEBEL_BASE/ohs/Oracle_WT1 ; \
+  export ORACLE_INSTANCE=$SIEBEL_BASE/ohs/Oracle_WT1/instances/instance1 ; \
+  $SIEBEL_BASE/ohs/Oracle_WT1/opmn/bin/opmnctl deleteinstance ; \
+  $SIEBEL_BASE/ohs/Oracle_WT1/opmn/bin/opmnctl createinstance -adminRegistration OFF ;\
+  $SIEBEL_BASE/ohs/Oracle_WT1/opmn/bin/opmnctl createcomponent -componentType OHS -componentName ohs1"
 }
 
 finish () {
   cp templates/siebel_services /etc/init.d/
+  sed -i -e "s,CHANGE_ME_SIEBEL_BASE,$SIEBEL_BASE," /etc/init.d/siebel_services
   chkconfig --add siebel_services 
   /etc/init.d/siebel_services stop
   /etc/init.d/siebel_services start

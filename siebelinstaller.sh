@@ -59,13 +59,13 @@ execute_once configure_siebel_gateway "$SIEBEL_VERSION"
 execute_once configure_siebel_enterprise "$SIEBEL_VERSION"
 execute_once configure_siebel_swe_profile "$SIEBEL_VERSION"
 execute_once create_siebel_database "$SIEBEL_VERSION"
-exit 0
 execute_once configure_siebel_server "$SIEBEL_VERSION"
 execute_once import_repository "$SIEBEL_VERSION"
 execute_once install_orcale_ohs "$OHS_VERSION"
 execute_once run_srvrmgr "basic_setup.in"
 execute_once siebel_apply_swe_profile "$SIEBEL_VERSION"
 execute_once ohs_reconfigure "$SIEBEL_VERSION"
+exit
 execute_once finish "installation"
 
 echo "Done!"
