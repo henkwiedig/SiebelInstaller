@@ -175,6 +175,7 @@ EOF
   $ORACLE_BASE/oraInventory/orainstRoot.sh
   $ORACLE_HOME/root.sh
   sed "s,CHANGE_ME_ORACLE_HOME,$ORACLE_HOME," templates/oracle_$ORACLE_VERSION.dbora > /etc/init.d/dbora
+  chmod +x /etc/init.d/dbora
   chkconfig --add dbora
   sed -i -e "s,^orcl:$ORACLE_HOME:N,orcl:$ORACLE_HOME:Y," /etc/oratab
   touch /var/lock/subsys/dbora
