@@ -27,3 +27,5 @@ rm -rf $SIEBEL_BASE
 userdel -f -r siebel
 groupdel siebel
 rm -f .status/*siebel*
+
+rm -rf .status/
