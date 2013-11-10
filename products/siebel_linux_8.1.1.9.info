@@ -1,0 +1,5 @@
+FILE_LIST="FILE1 FILE2"
+FILE1_URL='https://updates.oracle.com/Orion/Services/download/p14795143_811_Linux-x86-64_1of2.zip?aru=15616411&patch_file=p14795143_811_Linux-x86-64_1of2.zip'
+FILE1_NAME='p14795143_811_Linux-x86-64_1of2.zip'
+FILE2_URL='https://updates.oracle.com/Orion/Services/download/p14795143_811_Linux-x86-64_2of2.zip?aru=15616411&patch_file=p14795143_811_Linux-x86-64_2of2.zip'
+FILE2_NAME='p14795143_811_Linux-x86-64_2of2.zip'
