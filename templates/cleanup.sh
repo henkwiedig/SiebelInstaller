@@ -11,7 +11,8 @@ then
 fi
 
 
-#remove oracle
+#del oracle
+chkconfig --del dbora
 rm -fr $ORACLE_BASE /etc/oraInst.loc /etc/oratab /etc/init.d/dbora
 userdel -f -r oracle
 groupdel oinstall
@@ -19,7 +20,8 @@ groupdel dba
 groupdel oper
 rm -f .status/download_from_mos_oracle_11.2.0.3 .status/install_oracle_oracle_11.2.0.3 .status/unpack_product_oracle_11.2.0.3
 
-#remove siebel
+#del siebel
+chkconfig --del siebel_services 
 rm /etc/init.d/siebel_services
 rm -rf $SIEBEL_BASE
 userdel -f -r siebel
