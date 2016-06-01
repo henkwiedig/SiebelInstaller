@@ -7,7 +7,7 @@ These scripts will download, install, configure a complete Siebel Installation.
 A One-Click Siebel-Admin solution.
 
 * Oracle Database 12.1.0.2.0
-* Siebel 16
+* Siebel 16.0.0.0
 * Oracle Webserver 11.1.1.7
 
 **Requirements**

@@ -1,0 +1,5 @@
+imageVersion="16.0.0.0"
+imageDirectory="CHANGE_ME"
+platformList={Linux}
+productList={ORACLE_LDAP_Client,Siebel_Enterprise_Server,Siebel_Web_Server_Extension}
+languageList={ENU}
