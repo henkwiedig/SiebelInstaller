@@ -144,8 +144,8 @@ install_oracle ()
 
   useradd -g oinstall -G dba,oper oracle
   sed -i -e 's/^SELINUX=.*$/SELINUX=permissive/' /etc/selinux/config
-  service iptables stop
-  chkconfig iptables off
+  #service iptables stop
+  #chkconfig iptables off
   mkdir -p $ORACLE_HOME
   chown -R oracle:oinstall $ORACLE_BASE
   chmod -R 775 $ORACLE_BASE
@@ -165,7 +165,7 @@ PATH=\$ORACLE_HOME/bin:\$PATH; export PATH
 LD_LIBRARY_PATH=\$ORACLE_HOME/lib:/lib:/usr/lib; export LD_LIBRARY_PATH
 CLASSPATH=\$ORACLE_HOME/jlib:\$ORACLE_HOME/rdbms/jlib; export CLASSPATH
 EOF
-  sed -i -e 's/^CV_ASSUME_DISTID=OEL4*$/CV_ASSUME_DISTID=OEL6/' $SCRIPT_ROOT/unpack/oracle_$ORACLE_VERSION/database/stage/cvu/cv/admin/cvu_config
+  #sed -i -e 's/^CV_ASSUME_DISTID=OEL4*$/CV_ASSUME_DISTID=OEL6/' $SCRIPT_ROOT/unpack/oracle_$ORACLE_VERSION/database/stage/cvu/cv/admin/cvu_config
 
   #TODO: fix response file
   sed "s,CHANGE_ME_ORACLE_BASE,$ORACLE_BASE," $SCRIPT_ROOT/templates/oracle_runInstaller_$ORACLE_VERSION.rsp > /tmp/oracle_runInstaller_$ORACLE_VERSION.rsp
