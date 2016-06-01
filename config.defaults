@@ -9,7 +9,7 @@ ROOT_PASSWROD=rootroot
 #password for sys,dbs,sysdba
 ORACLE_PASSWROD=oracle
 #default Oracle Version to install
-ORACLE_VERSION=11.2.0.3
+ORACLE_VERSION=12.1.0.2.0
 #ORACLE_BASE
 ORACLE_BASE=/opt/oracle
 #ORACLE_HOME
@@ -20,7 +20,7 @@ SIEBEL_PASSWORD=siebel
 #Sadmin Password
 SADMIN_PASSWORD=sadmin
 #default Siebel version to install
-SIEBEL_VERSION=8.1.1.11
+SIEBEL_VERSION=IP2016
 #Siebel Base Directory
 SIEBEL_BASE=/opt/siebel/$SIEBEL_VERSION
 

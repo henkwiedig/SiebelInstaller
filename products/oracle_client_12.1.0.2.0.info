@@ -1,0 +1,3 @@
+FILES_LIST="FILE1"
+FILE1_URL='https://updates.oracle.com/Orion/Services/download/p21419221_121020_LINUX.zip?aru=19225554&patch_file=p21419221_121020_LINUX.zip'
+FILE1_NAME='p21419221_121020_LINUX.zip'
